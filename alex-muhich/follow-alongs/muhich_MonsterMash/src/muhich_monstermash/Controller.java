@@ -28,4 +28,7 @@ public class Controller {
             System.out.println(monster);
         }
     }
+    public void fight(Monster mon1, Monster mon2){
+        
+    }
 }
