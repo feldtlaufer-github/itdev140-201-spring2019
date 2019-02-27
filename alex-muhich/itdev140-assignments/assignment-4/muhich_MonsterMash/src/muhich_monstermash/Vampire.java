@@ -36,7 +36,7 @@ public class Vampire extends Monster{
         return "My name is " + getName() + ".\nI'm a " + getMonsterType() +
                 " monster.\nI have a scare factor of " + getScareFactor() + 
                 ",a size of " + getSize() + ", and a speed of " + getSpeed() + "."
-                + "\nMy wingspan is " + getWingSpan() + ".";
+                + "\nMy wingspan is " + getWingSpan() + ".\n";
     }
     
     

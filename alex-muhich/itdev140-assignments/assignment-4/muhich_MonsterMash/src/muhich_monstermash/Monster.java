@@ -15,14 +15,18 @@ public class Monster {
     private int scareFactor, size, speed;
     
     public Monster(String monsterType, String name, int scareFactor, int size, int speed){
-        
+        this.monsterType = monsterType;
+        this.name = name;
+        this.scareFactor = scareFactor;
+        this.size = size;
+        this.speed = speed;
     }
     
     @Override
     public String toString(){
         return "My name is " + getName() + ".\nI'm a " + getMonsterType() +
                 " monster.\nI have a scare factor of " + getScareFactor() + 
-                ",a size of " + getSize() + ", and a speed of " + getSpeed() + ".";
+                ",a size of " + getSize() + ", and a speed of " + getSpeed() + ".\n";
     }
     
     public String speak(){
