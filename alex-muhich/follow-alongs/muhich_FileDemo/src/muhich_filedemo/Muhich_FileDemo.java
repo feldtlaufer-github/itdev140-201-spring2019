@@ -15,7 +15,11 @@ public class Muhich_FileDemo {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        FileWriter fw = new FileWriter();
+        fw.controlIt();
+        
+        TodoList tdl = new TodoList();
+        tdl.doIt();
     }
     
 }

@@ -31,24 +31,22 @@ public class FileWriter {
         
         //get the fileName
         System.out.print("Enter the filename: ");
-        fileName = scanner.next();
+        fileName = scanner.nextLine();
         
-        try {
-            PrintWriter outputFile = new PrintWriter(fileName);
-            
-            for(int i = 1; i <= numItems; i++){
-            //get the name of the todolist item
-            System.out.println("Enter the name of the todo item number " + i + ": ");
-            todoItem = scanner.nextLine();
-            
-            //write the todo item to the file
-            outputFile.println(todoItem);
-            
-            //close the file
-            outputFile.close();
-            System.out.println("");
-        }
-        } catch (FileNotFoundException ex) {
+        try (PrintWriter outputFile = new PrintWriter(fileName)) {
+                for (int i = 1; i <= numItems; i++) {
+                    //get the name of the todolist item
+                    System.out.print("Enter the name of the todo item number " + i + ": ");
+                    todoItem = scanner.nextLine();
+                    
+                    //write the todo item to the file
+                    outputFile.println(todoItem);
+                }
+                //close the file
+                outputFile.close();
+                System.out.println("Data entered");
+            }
+        catch (FileNotFoundException ex) {
             Logger.getLogger(FileWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
         
