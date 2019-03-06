@@ -42,8 +42,6 @@ public class FileWriter {
                     //write the todo item to the file
                     outputFile.println(todoItem);
                 }
-                //close the file
-                outputFile.close();
                 System.out.println("Data entered");
             }
         catch (FileNotFoundException ex) {

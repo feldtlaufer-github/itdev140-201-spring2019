@@ -5,8 +5,8 @@
  */
 package muhich_grocerylist;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,16 +15,15 @@ import java.util.logging.Logger;
  *
  * @author plain
  */
-public class FileWriter {
-    public void write(ArrayList gList){
-        try (PrintWriter outputFile = new PrintWriter("groceries.txt")) {
+public class MyFileWriter {
+    public void write(ArrayList<String> gList){
+        try (FileWriter outputFile = new FileWriter("groceries.txt", false)) {
             for(int i = 0; i < gList.size(); i++){
-                outputFile.println(gList.get(i));
+                outputFile.write(gList.get(i) + "\n");
             }
-            outputFile.close();
         }
-        catch (FileNotFoundException ex) {
-            Logger.getLogger(FileWriter.class.getName()).log(Level.SEVERE, null, ex);
+        catch (IOException ex) {
+            Logger.getLogger(MyFileWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

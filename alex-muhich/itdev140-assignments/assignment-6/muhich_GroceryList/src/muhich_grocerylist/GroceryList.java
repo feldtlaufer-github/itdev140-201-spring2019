@@ -19,10 +19,12 @@ public class GroceryList {
     public ArrayList<String> getList(){
         return gList;
     }
-    public void addToList(String s){
+    public String addToList(String s){
         gList.add(s);
+        return s + " added to list";
     }
-    public void removeFromList(int index){
-        gList.remove(index);
+    public String removeFromList(String s){
+        gList.remove(s);
+        return s + " removed from list";
     }
 }

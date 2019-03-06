@@ -35,7 +35,6 @@ public class TodoList {
                     //display the todo item to the console
                     System.out.println(todoItem);
                 }
-                //close the file
             }
         catch (FileNotFoundException ex) {
             Logger.getLogger(TodoList.class.getName()).log(Level.SEVERE, null, ex);
