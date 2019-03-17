@@ -7,7 +7,7 @@ package muhich_zookeeper;
 
 /**
  *
- * @author plain
+ * @author Alex Jerard Muhich
  */
 public class Muhich_ZooKeeper {
 
@@ -15,7 +15,8 @@ public class Muhich_ZooKeeper {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Controller controller = new Controller();
+        controller.run();
     }
     
 }
