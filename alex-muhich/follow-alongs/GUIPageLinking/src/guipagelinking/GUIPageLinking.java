@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package muhich_guibmi;
+package guipagelinking;
 
 /**
  *
  * @author plain
  */
-public class Muhich_GUIBMI {
+public class GUIPageLinking {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new BMIForm().setVisible(true);
+        Form1 f1 = new Form1();
+        f1.setVisible(true);
     }
     
 }

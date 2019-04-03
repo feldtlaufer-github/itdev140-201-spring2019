@@ -78,6 +78,8 @@ public class BMIForm extends javax.swing.JFrame {
 
         jLabel7.setText("Gender:");
 
+        lblMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,11 +161,36 @@ public class BMIForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-        
+        this.dispose();
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnCalcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcActionPerformed
+        Calculation calculator = new Calculation();
+        double bmi = calculator.calculateBMI(Double.parseDouble(etWeight.getText()), Double.parseDouble(etHeight.getText()));
         
+        StringBuilder sb = new StringBuilder();
+        sb.append("<html>");
+        sb.append(etName.getText());
+        sb.append("<br/>");
+        sb.append(etAge.getText());
+        sb.append(" years old<br/>");
+        sb.append(etGender.getText());
+        sb.append("<br/>");
+        sb.append(etWeight.getText());
+        sb.append(" lbs<br/>");
+        sb.append(etHeight.getText());
+        sb.append(" inches<br/>");
+        if(bmi < 18.5) sb.append("Underweight");
+        else if(bmi >= 18.5 && bmi < 25) sb.append("Optimal Weight");
+        else sb.append("Overweight");
+        sb.append("</html>");
+        lblMessage.setText(sb.toString());
+        
+        etName.setText("");
+        etAge.setText("");
+        etWeight.setText("");
+        etHeight.setText("");
+        etGender.setText("");
     }//GEN-LAST:event_btnCalcActionPerformed
 
     /**
