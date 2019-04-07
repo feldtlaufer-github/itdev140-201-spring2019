@@ -7,9 +7,7 @@ package muhich_indivproject;
  * @author Alex Jerard Muhich
  */
 public class Manga {
-    private String isbn, title, author;
-    private int volume;
-    private boolean ownership;
+    private String isbn, title, author, volume, ownership;
 
     /**
      * 
@@ -19,7 +17,7 @@ public class Manga {
      * @param volume
      * @param ownership 
      */
-    public Manga(String isbn, String title, String author, int volume, boolean ownership) {
+    public Manga(String isbn, String title, String author, String volume, String ownership) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -75,28 +73,28 @@ public class Manga {
      * 
      * @return 
      */
-    public int getVolume() {
+    public String getVolume() {
         return volume;
     }
     /**
      * 
      * @param volume 
      */
-    public void setVolume(int volume) {
+    public void setVolume(String volume) {
         this.volume = volume;
     }
     /**
      * 
      * @return 
      */
-    public boolean getOwnership() {
+    public String getOwnership() {
         return ownership;
     }
     /**
      * 
      * @param ownership 
      */
-    public void setOwnership(boolean ownership) {
+    public void setOwnership(String ownership) {
         this.ownership = ownership;
     }
     

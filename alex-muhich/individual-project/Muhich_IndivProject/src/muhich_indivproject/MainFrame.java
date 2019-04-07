@@ -1,21 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package muhich_indivproject;
+
+import java.util.ArrayList;
 
 /**
  *
- * @author plain
+ * @author Alex Jerard Muhich
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    private final SQLiteJDBC database;
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        database = new SQLiteJDBC();
     }
 
     /**
@@ -27,11 +26,11 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        isbnLabel0 = new javax.swing.JLabel();
+        titleLabel0 = new javax.swing.JLabel();
+        authorLabel0 = new javax.swing.JLabel();
+        volumeLabel0 = new javax.swing.JLabel();
+        ownLabel0 = new javax.swing.JLabel();
         etVolume0 = new javax.swing.JTextField();
         etOwn0 = new javax.swing.JTextField();
         etAuthor0 = new javax.swing.JTextField();
@@ -43,15 +42,15 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("My Manga Collection");
         setResizable(false);
 
-        jLabel1.setText("ISBN:");
+        isbnLabel0.setText("ISBN:");
 
-        jLabel2.setText("Title:");
+        titleLabel0.setText("Title:");
 
-        jLabel3.setText("Author:");
+        authorLabel0.setText("Author:");
 
-        jLabel4.setText("Volume:");
+        volumeLabel0.setText("Volume:");
 
-        jLabel5.setText("Own?:");
+        ownLabel0.setText("Own?:");
 
         etISBN0.setToolTipText("");
 
@@ -71,17 +70,17 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                            .addComponent(volumeLabel0)
+                            .addComponent(ownLabel0))
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etVolume0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(authorLabel0)
+                            .addComponent(titleLabel0)
+                            .addComponent(isbnLabel0))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(etISBN0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -98,23 +97,23 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(isbnLabel0)
                     .addComponent(etISBN0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
+                    .addComponent(titleLabel0)
                     .addComponent(etTitle0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
+                    .addComponent(authorLabel0)
                     .addComponent(etAuthor0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
+                    .addComponent(volumeLabel0)
                     .addComponent(etVolume0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
+                    .addComponent(ownLabel0)
                     .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnSearch)
@@ -131,11 +130,20 @@ public class MainFrame extends javax.swing.JFrame {
         "Title: Love" will return "Love Hina", "Stairway to Love", "Loved and Lost"
         */
         
+        checkDatabase();
+        
         //new IndivMangaFrame().setVisible(true);
         //new ListMangaFrame().setVisible(true);
-        //this.dispose();
+        
     }//GEN-LAST:event_btnSearchActionPerformed
-
+    /**
+     * 
+     */
+    private void checkDatabase(){
+        ArrayList<Manga> mangaList = database.selectAll();
+        System.out.println(mangaList);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -152,36 +160,33 @@ public class MainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException |
+                 InstantiationException |
+                 IllegalAccessException |
+                 javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new MainFrame().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel authorLabel0;
     private javax.swing.JButton btnSearch;
     private javax.swing.JTextField etAuthor0;
     private javax.swing.JTextField etISBN0;
     private javax.swing.JTextField etOwn0;
     private javax.swing.JTextField etTitle0;
     private javax.swing.JTextField etVolume0;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel isbnLabel0;
+    private javax.swing.JLabel ownLabel0;
+    private javax.swing.JLabel titleLabel0;
+    private javax.swing.JLabel volumeLabel0;
     // End of variables declaration//GEN-END:variables
 }
