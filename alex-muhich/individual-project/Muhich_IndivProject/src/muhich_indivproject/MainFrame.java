@@ -171,8 +171,11 @@ public class MainFrame extends javax.swing.JFrame {
                     stringList[i] = mangaList.get(i).toString();
                 }
                 new ListMangaFrame(stringList).setVisible(true);
+            }else if(mangaList.size() == 1){
+                new IndivMangaFrame(mangaList.get(0)).setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Nothing with those criteria was found in the database");
             }
-            else new IndivMangaFrame(mangaList.get(0)).setVisible(true);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
