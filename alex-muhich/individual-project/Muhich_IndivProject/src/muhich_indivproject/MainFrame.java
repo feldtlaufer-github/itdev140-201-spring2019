@@ -2,6 +2,7 @@
 package muhich_indivproject;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,6 +38,7 @@ public class MainFrame extends javax.swing.JFrame {
         etTitle0 = new javax.swing.JTextField();
         etISBN0 = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("My Manga Collection");
@@ -61,36 +63,46 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnSearch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdd))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(volumeLabel0)
-                            .addComponent(ownLabel0))
-                        .addGap(12, 12, 12)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(etVolume0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(authorLabel0)
-                            .addComponent(titleLabel0)
-                            .addComponent(isbnLabel0))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(etISBN0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(etTitle0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(etAuthor0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(volumeLabel0)
+                                    .addComponent(ownLabel0))
+                                .addGap(12, 12, 12)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(etVolume0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(authorLabel0)
+                                    .addComponent(titleLabel0)
+                                    .addComponent(isbnLabel0))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(etISBN0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(etTitle0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(etAuthor0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSearch)
-                .addGap(95, 95, 95))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,9 +127,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ownLabel0)
                     .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnSearch)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearch)
+                    .addComponent(btnAdd))
+                .addContainerGap())
         );
 
         pack();
@@ -143,7 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 new ListMangaFrame(stringList).setVisible(true);
             }
-            else new IndivMangaFrame().setVisible(true);
+            else new IndivMangaFrame(mangaList.get(0)).setVisible(true);
         }else{ //user wants to search on some criteria
             ArrayList<Manga> mangaList = database.selectWhere(
                 etISBN0.getText(),
@@ -158,13 +172,25 @@ public class MainFrame extends javax.swing.JFrame {
                 }
                 new ListMangaFrame(stringList).setVisible(true);
             }
-            else new IndivMangaFrame().setVisible(true);
+            else new IndivMangaFrame(mangaList.get(0)).setVisible(true);
         }
-        
-        //new IndivMangaFrame().setVisible(true);
-        //
-        
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        //check if any of the fields are empty
+        if(etISBN0.getText().isEmpty() ||
+            etAuthor0.getText().isEmpty() ||
+            etTitle0.getText().isEmpty() ||
+            etOwn0.getText().isEmpty() ||
+            etVolume0.getText().isEmpty()){
+            //alert user that empty fields are not allowed
+            JOptionPane.showMessageDialog(null, "Please don't leave any fields blank");
+        }else{
+            //add the info to the database
+            database.insert(new Manga(etISBN0.getText(), etTitle0.getText(), etAuthor0.getText(),
+                    etOwn0.getText(), etVolume0.getText()));
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,6 +226,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel0;
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnSearch;
     private javax.swing.JTextField etAuthor0;
     private javax.swing.JTextField etISBN0;

@@ -9,9 +9,15 @@ public class IndivMangaFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form IndivMangaFrame
+     * @param manga
      */
-    public IndivMangaFrame() {
+    public IndivMangaFrame(Manga manga) {
         initComponents();
+        etISBN1.setText(manga.getIsbn());
+        etTitle1.setText(manga.getTitle());
+        etAuthor1.setText(manga.getAuthor());
+        etVolume1.setText(manga.getVolume());
+        etOwn1.setText(manga.getOwnership());
     }
 
     /**
@@ -195,7 +201,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new IndivMangaFrame().setVisible(true);
+            new IndivMangaFrame(new Manga(null, null, null, null, null)).setVisible(true);
         });
     }
 
