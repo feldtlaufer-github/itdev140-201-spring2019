@@ -165,6 +165,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 etAuthor1.setEditable(false);
                 etVolume1.setEditable(false);
                 etOwn1.setEditable(false);
+                btnModify.setText("Modify");
                 //TODO: update the database with the changes
                 break;
         }

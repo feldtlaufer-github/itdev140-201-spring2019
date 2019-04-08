@@ -57,8 +57,8 @@ public class SQLiteJDBC {
             
             statement = connection.createStatement();
             String sql = "INSERT INTO Manga (isbn,title,author,volume,ownership) " +
-                    "VALUES (" + manga.getIsbn() + ", " + manga.getTitle() +
-                    ", " + manga.getAuthor() + ", " + manga.getVolume()  + ", " + manga.getOwnership() + " );";
+                    "VALUES ('" + manga.getIsbn() + "', '" + manga.getTitle() +
+                    "', '" + manga.getAuthor() + "', '" + manga.getVolume()  + "', '" + manga.getOwnership() + "' );";
             statement.executeUpdate(sql);
             statement.close();
             connection.commit();
@@ -82,19 +82,19 @@ public class SQLiteJDBC {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT * FROM Manga WHERE 1 = 1 ");
             if(!_isbn.isEmpty()) {
-                stringBuilder.append(" AND isbn LIKE ").append(_isbn);
+                stringBuilder.append(" AND isbn LIKE '%").append(_isbn).append("%'");
             }
             if(!_title.isEmpty()) {
-                stringBuilder.append(" AND title LIKE ").append(_title);
+                stringBuilder.append(" AND title LIKE '%").append(_title).append("%'");
             }
             if(!_author.isEmpty()) {
-                stringBuilder.append(" AND author LIKE ").append(_author);
+                stringBuilder.append(" AND author LIKE '%").append(_author).append("%'");
             }
             if(!_volume.isEmpty()) {
-                stringBuilder.append(" AND volume LIKE ").append(_volume);
+                stringBuilder.append(" AND volume LIKE '%").append(_volume).append("%'");
             }
             if(!_own.isEmpty()) {
-                stringBuilder.append(" AND ownership LIKE ").append(_own);
+                stringBuilder.append(" AND ownership LIKE '%").append(_own).append("%'");
             }
             
             try (ResultSet resultSet = statement.executeQuery(stringBuilder.toString())) {
@@ -162,7 +162,7 @@ public class SQLiteJDBC {
             
             statement = connection.createStatement();
             String sql = "UPDATE Manga set " + key + " = " +
-                value + " where isbn=" + isbn + ";";
+                value + " where isbn='" + isbn + "';";
             statement.executeUpdate(sql);
             connection.commit();
             
@@ -185,7 +185,7 @@ public class SQLiteJDBC {
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            String sql = "DELETE from Manga where isbn=" + isbn + ";";
+            String sql = "DELETE from Manga where isbn='" + isbn + "';";
             statement.executeUpdate(sql);
             connection.commit();
             
