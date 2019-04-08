@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -21,36 +23,12 @@ public class SQLiteJDBC {
      */
     public SQLiteJDBC(){
         //if there isn't a manga table, make one
-        if(!doesTableExist()) createTable();
-    }
-    /**
-     * Checks if there is a table called manga in the database
-     * @return 
-     */
-    private boolean doesTableExist(){
-        boolean result = false;
-        try{
-            //make a connection to the database
-            Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
-            
-            //check if manga table exists in database
-            statement = connection.createStatement();
-            String sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='manga'";
-            try (ResultSet resultSet = statement.executeQuery(sql)) {
-                result = resultSet.next(); //if there is a next in resultSet, result will be true, otherwise false
-            }
-            
-        } catch (ClassNotFoundException | SQLException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        return result;
+        createTableIfNotExists();
     }
     /**
      * Creates a table called manga with attributes isbn as primary key, title, author, volume, ownership
      */
-    private void createTable(){
+    private void createTableIfNotExists(){
         try{
             //make a connection to the database
             Class.forName("org.sqlite.JDBC");
@@ -58,13 +36,8 @@ public class SQLiteJDBC {
             
             //create a table called manga
             statement = connection.createStatement();
-            String sql = "CREATE TABLE MANGA " +
-                    "(ISBN TEXT PRIMARY KEY    NOT NULL," +
-                    " TITLE             TEXT   NOT NULL, " +
-                    " AUTHOR            TEXT   NOT NULL, " + 
-                    " VOLUME            INT    NOT NULL, " +
-                    " OWNERSHIP         TEXT    NOT NULL";
-            statement.executeUpdate(sql);
+            String sql = "CREATE TABLE IF NOT EXISTS Manga ('isbn' TEXT,'title' TEXT,'author' TEXT,'volume' TEXT,'ownership' TEXT)";
+            statement.execute(sql);
             statement.close();
             connection.close();
             
@@ -85,7 +58,7 @@ public class SQLiteJDBC {
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            String sql = "INSERT INTO MANGA (ISBN,TITLE,AUTHOR,VOLUME,OWNERSHIP) " +
+            String sql = "INSERT INTO Manga (isbn,title,author,volume,ownership) " +
                     "VALUES (" + manga.getIsbn() + ", " + manga.getTitle() +
                     ", " + manga.getAuthor() + ", " + manga.getVolume()  + ", " + manga.getOwnership() + " );";
             statement.executeUpdate(sql);
@@ -97,6 +70,52 @@ public class SQLiteJDBC {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    public ArrayList<Manga> selectWhere(String _isbn, String _title, String _author, String _volume, String _own){
+        ArrayList<Manga> mangaList = new ArrayList<>();
+        try{
+            //attempt to make a connection to the database
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection.setAutoCommit(false);
+            
+            statement = connection.createStatement();
+            
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("SELECT * FROM Manga WHERE 1 = 1 ");
+            if(!_isbn.isEmpty()) {
+                stringBuilder.append(" AND isbn LIKE ").append(_isbn);
+            }
+            if(!_title.isEmpty()) {
+                stringBuilder.append(" AND title LIKE ").append(_title);
+            }
+            if(!_author.isEmpty()) {
+                stringBuilder.append(" AND author LIKE ").append(_author);
+            }
+            if(!_volume.isEmpty()) {
+                stringBuilder.append(" AND volume LIKE ").append(_volume);
+            }
+            if(!_own.isEmpty()) {
+                stringBuilder.append(" AND ownership LIKE ").append(_own);
+            }
+            
+            try (ResultSet resultSet = statement.executeQuery(stringBuilder.toString())) {
+                while(resultSet.next()){
+                    //make an object with the attributes and add it to the list
+                    mangaList.add(new Manga(resultSet.getString("isbn"),
+                            resultSet.getString("title"),
+                            resultSet.getString("author"),
+                            resultSet.getString("volume"),
+                            resultSet.getString("ownership")));
+                }
+            }
+            statement.close();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return mangaList;
     }
     /**
      * Grabs all manga from the database and returns what's found in an ArrayList
@@ -111,7 +130,7 @@ public class SQLiteJDBC {
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            try (ResultSet resultSet = statement.executeQuery("SELECT * FROM MANGA;")) {
+            try (ResultSet resultSet = statement.executeQuery("SELECT * FROM Manga;")) {
                 while(resultSet.next()){
                     //grab attributes of the manga
                     String isbn = resultSet.getString("isbn");
@@ -144,8 +163,8 @@ public class SQLiteJDBC {
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            String sql = "UPDATE MANGA set " + key + " = " +
-                value + " where ISBN=" + isbn + ";";
+            String sql = "UPDATE Manga set " + key + " = " +
+                value + " where isbn=" + isbn + ";";
             statement.executeUpdate(sql);
             connection.commit();
             
@@ -168,7 +187,7 @@ public class SQLiteJDBC {
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            String sql = "DELETE from MANGA where ISBN=" + isbn + ";";
+            String sql = "DELETE from Manga where isbn=" + isbn + ";";
             statement.executeUpdate(sql);
             connection.commit();
             

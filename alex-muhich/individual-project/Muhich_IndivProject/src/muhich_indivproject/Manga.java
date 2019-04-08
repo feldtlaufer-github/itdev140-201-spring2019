@@ -25,7 +25,11 @@ public class Manga {
         this.ownership = ownership;
     }
 
-    
+    @Override
+    public String toString(){
+        return "<html>ISBN: " + isbn + "<br>Title: " + title + "<br>Author: " + author
+                 + "<br>Volume: " + volume + "<br>Own?: " + ownership + "</html>";
+    }
     
     /**
      * 

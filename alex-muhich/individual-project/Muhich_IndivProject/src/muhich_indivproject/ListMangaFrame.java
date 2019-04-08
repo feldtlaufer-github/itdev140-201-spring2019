@@ -1,6 +1,7 @@
 
 package muhich_indivproject;
 
+
 /**
  *
  * @author Alex Jerard Muhich
@@ -9,9 +10,12 @@ public class ListMangaFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ListMangaFrame
+     * @param mangaList
      */
-    public ListMangaFrame() {
+    public ListMangaFrame(String[] mangaList) {
         initComponents();
+        lvMangaList.setListData(mangaList);
+        
     }
 
     /**
@@ -85,7 +89,7 @@ public class ListMangaFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ListMangaFrame().setVisible(true);
+            new ListMangaFrame(new String[0]).setVisible(true);
         });
     }
 

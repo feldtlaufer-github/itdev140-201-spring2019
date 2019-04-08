@@ -124,26 +124,48 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        /*
-        TODO: Check the database for entries that have substrings of the info in the textfields
-        example:
-        "Title: Love" will return "Love Hina", "Stairway to Love", "Loved and Lost"
-        */
-        
-        checkDatabase();
+        //search for all is invoked by hitting search with all search fields empty
+        if(etISBN0.getText().isEmpty() &&
+           etAuthor0.getText().isEmpty() &&
+           etTitle0.getText().isEmpty() &&
+           etOwn0.getText().isEmpty() &&
+           etVolume0.getText().isEmpty()){
+            /*
+            do a selectAll and convert to string array to display if multiple entries found
+            if the database has only one item for some reason, i want it displayed
+            in the indivmangaframe
+            */
+            ArrayList<Manga> mangaList = database.selectAll();
+            if(mangaList.size() > 1){
+                String[] stringList = new String[mangaList.size()];
+                for(int i = 0; i < mangaList.size(); i++){
+                    stringList[i] = mangaList.get(i).toString();
+                }
+                new ListMangaFrame(stringList).setVisible(true);
+            }
+            else new IndivMangaFrame().setVisible(true);
+        }else{ //user wants to search on some criteria
+            ArrayList<Manga> mangaList = database.selectWhere(
+                etISBN0.getText(),
+                etTitle0.getText(),
+                etAuthor0.getText(),
+                etVolume0.getText(),
+                etOwn0.getText());
+            if(mangaList.size() > 1){
+                String[] stringList = new String[mangaList.size()];
+                for(int i = 0; i < mangaList.size(); i++){
+                    stringList[i] = mangaList.get(i).toString();
+                }
+                new ListMangaFrame(stringList).setVisible(true);
+            }
+            else new IndivMangaFrame().setVisible(true);
+        }
         
         //new IndivMangaFrame().setVisible(true);
-        //new ListMangaFrame().setVisible(true);
+        //
         
     }//GEN-LAST:event_btnSearchActionPerformed
-    /**
-     * 
-     */
-    private void checkDatabase(){
-        ArrayList<Manga> mangaList = database.selectAll();
-        System.out.println(mangaList);
-    }
-    
+
     /**
      * @param args the command line arguments
      */
