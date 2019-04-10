@@ -15,7 +15,7 @@ public class Book {
     
     @Override
     public String toString(){
-        return "<br>Title: " + title + "<br>Author: " + author
+        return "<html>Title: " + title + "<br>Author: " + author
                  + "<br>Own?: " + ownership + "</html>";
     }
 

@@ -18,7 +18,7 @@ public class Nostalgia extends Book{
     
     @Override
     public String toString(){
-        return "<br>Title: " + getTitle() + "<br>Author: " + getAuthor()
+        return "<html>Title: " + getTitle() + "<br>Author: " + getAuthor()
                  + "<br>Year Published: " + year + "<br>Own?: " + getOwnership() + "</html>";
     }
 

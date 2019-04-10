@@ -34,7 +34,7 @@ public class SQLiteJDBC {
             
             //create a table called manga
             statement = connection.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS Manga ('isbn' TEXT,'title'"
+            String sql = "CREATE TABLE IF NOT EXISTS Books ('isbn' TEXT,'title'"
                     + " TEXT,'author' TEXT,'volume' TEXT,'ownership' TEXT,'year' TEXT)";
             statement.execute(sql);
             statement.close();
@@ -60,19 +60,19 @@ public class SQLiteJDBC {
                 sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
                     "VALUES ('" + book.getIsbn() + "', '" + book.getTitle() +
                     "', '" + book.getAuthor() + "', '" + book.getVolume()  +
-                    "', '" + book.getOwnership() + "', '" + null + "' );";
+                    "', '" + book.getOwnership() + "', NULL );";
             }else if(_year != null){
                 Nostalgia book = new Nostalgia(_title, _author, _ownership, _year);
                 sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
-                    "VALUES ('" + null + "', '" + book.getTitle() +
-                    "', '" + book.getAuthor() + "', '" + null + "', '" + book.getOwnership() +
+                    "VALUES (NULL, '" + book.getTitle() +
+                    "', '" + book.getAuthor() + "', NULL, '" + book.getOwnership() +
                     "', '" + book.getYear() + "' );";
             }else{
                 Book book = new Book(_title, _author, _ownership);
                 sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
-                    "VALUES ('" + null + "', '" + book.getTitle() +
-                    "', '" + book.getAuthor() + "', '" + null + "', '" + book.getOwnership() +
-                    "', '" + null + "' );";
+                    "VALUES (NULL, '" + book.getTitle() +
+                    "', '" + book.getAuthor() + "', NULL, '" + book.getOwnership() +
+                    "', NULL );";
             }          
             
             statement.executeUpdate(sql);
