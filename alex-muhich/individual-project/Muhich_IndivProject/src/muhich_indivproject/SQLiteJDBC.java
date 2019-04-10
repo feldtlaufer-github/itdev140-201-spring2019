@@ -115,6 +115,42 @@ public class SQLiteJDBC {
         }
         return mangaList;
     }
+    public ArrayList<Book> selectAllBooks(){
+        ArrayList<Book> bookList = new ArrayList<>();
+        try{
+            //attempt to make a connection to the database
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
+            connection.setAutoCommit(false);
+            
+            statement = connection.createStatement();
+            try(ResultSet resultSet = statement.executeQuery("SELECT * FROM Books;")){
+                while(resultSet.next()){
+                    //grab attributes of the book
+                    String isbn = resultSet.getString("isbn");
+                    String title = resultSet.getString("title");
+                    String author = resultSet.getString("author");
+                    String volume = resultSet.getString("volume");
+                    String ownership = resultSet.getString("ownership");
+                    String year = resultSet.getString("year");
+                    if(isbn != null && volume != null){
+                        bookList.add(new Manga(isbn, title, author, volume, ownership));
+                    }else if(year != null){
+                        bookList.add(new Nostalgia(title, author, year, ownership));
+                    }else{
+                        bookList.add(new Book(title, author, ownership));
+                    }
+                }
+            }
+            statement.close();
+            connection.close();
+            
+        }catch(ClassNotFoundException | SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return bookList;
+    }
     /**
      * Grabs all manga from the database and returns what's found in an ArrayList
      * @return 

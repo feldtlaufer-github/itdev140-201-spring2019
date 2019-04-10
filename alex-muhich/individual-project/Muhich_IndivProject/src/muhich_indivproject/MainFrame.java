@@ -39,6 +39,8 @@ public class MainFrame extends javax.swing.JFrame {
         etISBN0 = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         btnAdd = new javax.swing.JButton();
+        yearLabel0 = new javax.swing.JLabel();
+        etYear0 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("My Manga Collection");
@@ -70,6 +72,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        yearLabel0.setText("Year:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -78,31 +82,37 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnAdd))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(volumeLabel0)
-                                    .addComponent(ownLabel0))
-                                .addGap(12, 12, 12)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(etVolume0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnSearch)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAdd))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(authorLabel0)
-                                    .addComponent(titleLabel0)
-                                    .addComponent(isbnLabel0))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(etISBN0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(etTitle0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(etAuthor0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(volumeLabel0)
+                                            .addComponent(ownLabel0))
+                                        .addGap(12, 12, 12)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(etVolume0, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                                            .addComponent(etOwn0, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                                            .addComponent(etYear0)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(authorLabel0)
+                                            .addComponent(titleLabel0)
+                                            .addComponent(isbnLabel0))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(etISBN0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(etTitle0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(etAuthor0, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(yearLabel0)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +137,11 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ownLabel0)
                     .addComponent(etOwn0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(yearLabel0)
+                    .addComponent(etYear0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearch)
                     .addComponent(btnAdd))
@@ -149,15 +163,33 @@ public class MainFrame extends javax.swing.JFrame {
             if the database has only one item for some reason, i want it displayed
             in the indivmangaframe
             */
+            
+            ArrayList<Book> bookList = database.selectAllBooks();
+            if(bookList.size() > 1){
+                String[] stringList = new String[bookList.size()];
+                for(int i = 0; i <  bookList.size(); i++){
+                    stringList[i] = bookList.get(i).toString();
+                }
+                new ListBookFrame(stringList).setVisible(true);
+            }
+            /*
             ArrayList<Manga> mangaList = database.selectAll();
             if(mangaList.size() > 1){
                 String[] stringList = new String[mangaList.size()];
                 for(int i = 0; i < mangaList.size(); i++){
                     stringList[i] = mangaList.get(i).toString();
                 }
-                new ListMangaFrame(stringList).setVisible(true);
+                new ListBookFrame(stringList).setVisible(true);
             }
-            else new IndivMangaFrame(mangaList.get(0)).setVisible(true);
+            */
+            else{
+                if(bookList.get(0) instanceof Manga)
+                    new IndivMangaFrame((Manga)bookList.get(0)).setVisible(true);
+                else if(bookList.get(0) instanceof Nostalgia)
+                    new IndivNostalgiaFrame((Nostalgia)bookList.get(0)).setVisible(true);
+                else
+                    new IndivBookFrame(bookList.get(0)).setVisible(true);
+            }
         }else{ //user wants to search on some criteria
             ArrayList<Manga> mangaList = database.selectWhere(
                 etISBN0.getText(),
@@ -170,7 +202,7 @@ public class MainFrame extends javax.swing.JFrame {
                 for(int i = 0; i < mangaList.size(); i++){
                     stringList[i] = mangaList.get(i).toString();
                 }
-                new ListMangaFrame(stringList).setVisible(true);
+                new ListBookFrame(stringList).setVisible(true);
             }else if(mangaList.size() == 1){
                 new IndivMangaFrame(mangaList.get(0)).setVisible(true);
             }else{
@@ -236,9 +268,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField etOwn0;
     private javax.swing.JTextField etTitle0;
     private javax.swing.JTextField etVolume0;
+    private javax.swing.JTextField etYear0;
     private javax.swing.JLabel isbnLabel0;
     private javax.swing.JLabel ownLabel0;
     private javax.swing.JLabel titleLabel0;
     private javax.swing.JLabel volumeLabel0;
+    private javax.swing.JLabel yearLabel0;
     // End of variables declaration//GEN-END:variables
 }

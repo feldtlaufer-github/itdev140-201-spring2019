@@ -34,7 +34,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         etAuthor1 = new javax.swing.JTextField();
         etVolume1 = new javax.swing.JTextField();
         etOwn1 = new javax.swing.JTextField();
-        btnModify = new javax.swing.JButton();
+        btnModifyManga = new javax.swing.JButton();
         ownLabel1 = new javax.swing.JLabel();
         volumeLabel1 = new javax.swing.JLabel();
         authorLabel1 = new javax.swing.JLabel();
@@ -65,10 +65,10 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         etOwn1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         etOwn1.setText("Yes");
 
-        btnModify.setText("Modify");
-        btnModify.addActionListener(new java.awt.event.ActionListener() {
+        btnModifyManga.setText("Modify");
+        btnModifyManga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModifyActionPerformed(evt);
+                btnModifyMangaActionPerformed(evt);
             }
         });
 
@@ -107,7 +107,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(86, 86, 86)
-                .addComponent(btnModify, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnModifyManga, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -134,7 +134,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etOwn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(btnModify)
+                .addComponent(btnModifyManga)
                 .addContainerGap())
         );
 
@@ -145,9 +145,9 @@ public class IndivMangaFrame extends javax.swing.JFrame {
      * Allows the user to modify/save the values for the manga
      * @param evt 
      */
-    private void btnModifyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyActionPerformed
+    private void btnModifyMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyMangaActionPerformed
         //determine what action is being taken based on the text of the button
-        switch(btnModify.getText()){
+        switch(btnModifyManga.getText()){
             case "Modify":
                 //set the TextFields to be editable
                 etISBN1.setEditable(true);
@@ -156,7 +156,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 etVolume1.setEditable(true);
                 etOwn1.setEditable(true);
                 //change the text property of the button to Save
-                btnModify.setText("Save");
+                btnModifyManga.setText("Save");
                 break;
             case "Save":
                 //set the Textfields to be uneditable
@@ -165,14 +165,14 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 etAuthor1.setEditable(false);
                 etVolume1.setEditable(false);
                 etOwn1.setEditable(false);
-                btnModify.setText("Modify");
+                btnModifyManga.setText("Modify");
                 //TODO: update the database with the changes
                 break;
         }
         
         
         
-    }//GEN-LAST:event_btnModifyActionPerformed
+    }//GEN-LAST:event_btnModifyMangaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,7 +208,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel1;
-    private javax.swing.JButton btnModify;
+    private javax.swing.JButton btnModifyManga;
     private javax.swing.JTextField etAuthor1;
     private javax.swing.JTextField etISBN1;
     private javax.swing.JTextField etOwn1;

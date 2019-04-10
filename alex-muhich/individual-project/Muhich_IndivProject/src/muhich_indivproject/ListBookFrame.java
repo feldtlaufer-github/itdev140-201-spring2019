@@ -6,15 +6,15 @@ package muhich_indivproject;
  *
  * @author Alex Jerard Muhich
  */
-public class ListMangaFrame extends javax.swing.JFrame {
+public class ListBookFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ListMangaFrame
-     * @param mangaList
+     * @param bookList
      */
-    public ListMangaFrame(String[] mangaList) {
+    public ListBookFrame(String[] bookList) {
         initComponents();
-        lvMangaList.setListData(mangaList);
+        lvBookList.setListData(bookList);
         
     }
 
@@ -28,18 +28,18 @@ public class ListMangaFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        lvMangaList = new javax.swing.JList<>();
+        lvBookList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Multiple Listings Found");
         setResizable(false);
 
-        lvMangaList.setModel(new javax.swing.AbstractListModel<String>() {
+        lvBookList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(lvMangaList);
+        jScrollPane1.setViewportView(lvBookList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -81,20 +81,21 @@ public class ListMangaFrame extends javax.swing.JFrame {
                  InstantiationException |
                  IllegalAccessException |
                  javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListMangaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListBookFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
         
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ListMangaFrame(new String[0]).setVisible(true);
+            new ListBookFrame(new String[0]).setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> lvMangaList;
+    private javax.swing.JList<String> lvBookList;
     // End of variables declaration//GEN-END:variables
 }

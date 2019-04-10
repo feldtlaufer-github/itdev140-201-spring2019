@@ -6,8 +6,8 @@ package muhich_indivproject;
  * 
  * @author Alex Jerard Muhich
  */
-public class Manga {
-    private String isbn, title, author, volume, ownership;
+public class Manga extends Book{
+    private String isbn, volume;
 
     /**
      * 
@@ -17,61 +17,30 @@ public class Manga {
      * @param volume
      * @param ownership 
      */
-    public Manga(String isbn, String title, String author, String volume, String ownership) {
+    public Manga (String isbn, String title, String author, String volume, String ownership) {
+        super(title, author, ownership);
         this.isbn = isbn;
-        this.title = title;
-        this.author = author;
         this.volume = volume;
-        this.ownership = ownership;
     }
 
     @Override
     public String toString(){
-        return "<html>ISBN: " + isbn + "<br>Title: " + title + "<br>Author: " + author
-                 + "<br>Volume: " + volume + "<br>Own?: " + ownership + "</html>";
+        return "<html>ISBN: " + isbn + "<br>Title: " + getTitle() + "<br>Author: " + getAuthor()
+                 + "<br>Volume: " + volume + "<br>Own?: " + getOwnership() + "</html>";
     }
-    
     /**
      * 
-     * @return
+     * @return 
      */
-    public String getIsbn() {
+    public String getIsbn(){
         return isbn;
     }
     /**
-    * 
-    * @param isbn 
-    */
-    public void setIsbn(String isbn) {
+     * 
+     * @param isbn 
+     */
+    public void setIsbn(String isbn){
         this.isbn = isbn;
-    }
-    /**
-     * 
-     * @return 
-     */
-    public String getTitle() {
-        return title;
-    }
-    /**
-     * 
-     * @param title 
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    /**
-     * 
-     * @return 
-     */
-    public String getAuthor() {
-        return author;
-    }
-    /**
-     * 
-     * @param author 
-     */
-    public void setAuthor(String author) {
-        this.author = author;
     }
     /**
      * 
@@ -86,20 +55,6 @@ public class Manga {
      */
     public void setVolume(String volume) {
         this.volume = volume;
-    }
-    /**
-     * 
-     * @return 
-     */
-    public String getOwnership() {
-        return ownership;
-    }
-    /**
-     * 
-     * @param ownership 
-     */
-    public void setOwnership(String ownership) {
-        this.ownership = ownership;
     }
     
 }
