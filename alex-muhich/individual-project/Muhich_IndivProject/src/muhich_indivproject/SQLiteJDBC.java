@@ -154,7 +154,7 @@ public class SQLiteJDBC {
                     if(isbn != null && volume != null){
                         bookList.add(new Manga(isbn, title, author, volume, ownership));
                     }else if(year != null){
-                        bookList.add(new Nostalgia(title, author, year, ownership));
+                        bookList.add(new Nostalgia(title, author, ownership, year));
                     }else{
                         bookList.add(new Book(title, author, ownership));
                     }
