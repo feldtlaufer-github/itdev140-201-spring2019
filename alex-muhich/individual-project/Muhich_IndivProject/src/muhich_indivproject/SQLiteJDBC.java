@@ -57,7 +57,7 @@ public class SQLiteJDBC {
             String sql;
             if(_isbn != null && _volume != null){
                 Manga book = new Manga(_isbn, _title, _author, _volume, _ownership);
-                sql = "INSERT INTO Manga (isbn,title,author,volume,ownership) " +
+                sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
                     "VALUES ('" + book.getIsbn() + "', '" + book.getTitle() +
                     "', '" + book.getAuthor() + "', '" + book.getVolume()  +
                     "', '" + book.getOwnership() + "', '" + null + "' );";
@@ -116,13 +116,13 @@ public class SQLiteJDBC {
         try{
             //attempt to make a connection to the database
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
             
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("SELECT * FROM Manga WHERE 1 = 1 ");
+            stringBuilder.append("SELECT * FROM Books WHERE 1 = 1 ");
             if(!_isbn.isEmpty()) {
                 stringBuilder.append(" AND isbn LIKE '%").append(_isbn).append("%'");
             }
@@ -292,11 +292,11 @@ public class SQLiteJDBC {
     public void update(String key, String value, String isbn){
         try{
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            String sql = "UPDATE Manga set " + key + " = " +
+            String sql = "UPDATE Books set " + key + " = " +
                 value + " where isbn='" + isbn + "';";
             statement.executeUpdate(sql);
             connection.commit();
@@ -316,11 +316,11 @@ public class SQLiteJDBC {
     public void delete(String isbn){
         try{
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            String sql = "DELETE from Manga where isbn='" + isbn + "';";
+            String sql = "DELETE from Books where isbn='" + isbn + "';";
             statement.executeUpdate(sql);
             connection.commit();
             

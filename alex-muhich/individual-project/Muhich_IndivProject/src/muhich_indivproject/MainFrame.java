@@ -248,13 +248,20 @@ public class MainFrame extends javax.swing.JFrame {
             etAuthor0.getText().isEmpty() ||
             etTitle0.getText().isEmpty() ||
             etOwn0.getText().isEmpty() ||
-            etVolume0.getText().isEmpty()){
+            etVolume0.getText().isEmpty() ||
+            etYear0.getText().isEmpty()){
             //alert user that empty fields are not allowed
             JOptionPane.showMessageDialog(null, "Please don't leave any fields blank");
         }else{
             //add the info to the database
+            
+            database.insertBook(etISBN0.getText(), etTitle0.getText(),
+                    etAuthor0.getText(), etVolume0.getText(), etOwn0.getText(), etYear0.getText());
+            
+            /*
             database.insert(new Manga(etISBN0.getText(), etTitle0.getText()
                     , etAuthor0.getText(),etOwn0.getText(), etVolume0.getText()));
+            */
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
