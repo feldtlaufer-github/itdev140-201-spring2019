@@ -11,7 +11,7 @@ package muhich_indivproject;
  */
 public class Nostalgia extends Book{
     private String year;
-    public Nostalgia(String title, String author, String year, String ownership){
+    public Nostalgia(String title, String author, String ownership, String year){
         super(title, author, ownership);
         this.year = year;
     }

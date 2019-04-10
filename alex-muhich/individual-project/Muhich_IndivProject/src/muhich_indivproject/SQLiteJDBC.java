@@ -30,13 +30,54 @@ public class SQLiteJDBC {
         try{
             //make a connection to the database
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
             
             //create a table called manga
             statement = connection.createStatement();
-            String sql = "CREATE TABLE IF NOT EXISTS Manga ('isbn' TEXT,'title' TEXT,'author' TEXT,'volume' TEXT,'ownership' TEXT)";
+            String sql = "CREATE TABLE IF NOT EXISTS Manga ('isbn' TEXT,'title'"
+                    + " TEXT,'author' TEXT,'volume' TEXT,'ownership' TEXT,'year' TEXT)";
             statement.execute(sql);
             statement.close();
+            connection.close();
+            
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+    public void insertBook(String _isbn, String _title, String _author, String _volume,
+            String _ownership, String _year){
+        try{
+         //attempt to make a connection to the database
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
+            connection.setAutoCommit(false);
+            
+            statement = connection.createStatement();
+            String sql;
+            if(_isbn != null && _volume != null){
+                Manga book = new Manga(_isbn, _title, _author, _volume, _ownership);
+                sql = "INSERT INTO Manga (isbn,title,author,volume,ownership) " +
+                    "VALUES ('" + book.getIsbn() + "', '" + book.getTitle() +
+                    "', '" + book.getAuthor() + "', '" + book.getVolume()  +
+                    "', '" + book.getOwnership() + "', '" + null + "' );";
+            }else if(_year != null){
+                Nostalgia book = new Nostalgia(_title, _author, _ownership, _year);
+                sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
+                    "VALUES ('" + null + "', '" + book.getTitle() +
+                    "', '" + book.getAuthor() + "', '" + null + "', '" + book.getOwnership() +
+                    "', '" + book.getYear() + "' );";
+            }else{
+                Book book = new Book(_title, _author, _ownership);
+                sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
+                    "VALUES ('" + null + "', '" + book.getTitle() +
+                    "', '" + book.getAuthor() + "', '" + null + "', '" + book.getOwnership() +
+                    "', '" + null + "' );";
+            }          
+            
+            statement.executeUpdate(sql);
+            statement.close();
+            connection.commit();
             connection.close();
             
         } catch (ClassNotFoundException | SQLException e) {
@@ -52,7 +93,7 @@ public class SQLiteJDBC {
         try{
             //attempt to make a connection to the database
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
@@ -68,6 +109,64 @@ public class SQLiteJDBC {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+    public ArrayList<Book> selectBookWhere(String _isbn, String _title,
+            String _author, String _volume, String _own, String _year){
+        ArrayList<Book> bookList = new ArrayList<>();
+        try{
+            //attempt to make a connection to the database
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:manga.db");
+            connection.setAutoCommit(false);
+            
+            statement = connection.createStatement();
+            
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("SELECT * FROM Manga WHERE 1 = 1 ");
+            if(!_isbn.isEmpty()) {
+                stringBuilder.append(" AND isbn LIKE '%").append(_isbn).append("%'");
+            }
+            if(!_title.isEmpty()) {
+                stringBuilder.append(" AND title LIKE '%").append(_title).append("%'");
+            }
+            if(!_author.isEmpty()) {
+                stringBuilder.append(" AND author LIKE '%").append(_author).append("%'");
+            }
+            if(!_volume.isEmpty()) {
+                stringBuilder.append(" AND volume LIKE '%").append(_volume).append("%'");
+            }
+            if(!_own.isEmpty()) {
+                stringBuilder.append(" AND ownership LIKE '%").append(_own).append("%'");
+            }
+            if(!_year.isEmpty()) {
+                stringBuilder.append(" AND year LIKE '%").append(_year).append("%'");
+            }
+            
+            try (ResultSet resultSet = statement.executeQuery(stringBuilder.toString())) {
+                while(resultSet.next()){
+                    //grab attributes of the book
+                    String isbn = resultSet.getString("isbn");
+                    String title = resultSet.getString("title");
+                    String author = resultSet.getString("author");
+                    String volume = resultSet.getString("volume");
+                    String ownership = resultSet.getString("ownership");
+                    String year = resultSet.getString("year");
+                    if(isbn != null && volume != null){
+                        bookList.add(new Manga(isbn, title, author, volume, ownership));
+                    }else if(year != null){
+                        bookList.add(new Nostalgia(title, author, year, ownership));
+                    }else{
+                        bookList.add(new Book(title, author, ownership));
+                    }
+                }
+            }
+            statement.close();
+            connection.close();
+        }catch(ClassNotFoundException | SQLException e){
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return bookList;
     }
     public ArrayList<Manga> selectWhere(String _isbn, String _title, String _author, String _volume, String _own){
         ArrayList<Manga> mangaList = new ArrayList<>();

@@ -183,6 +183,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
             */
             else{
+                //detemine what kind of single book was found and display the appropriate frame
                 if(bookList.get(0) instanceof Manga)
                     new IndivMangaFrame((Manga)bookList.get(0)).setVisible(true);
                 else if(bookList.get(0) instanceof Nostalgia)
@@ -191,12 +192,41 @@ public class MainFrame extends javax.swing.JFrame {
                     new IndivBookFrame(bookList.get(0)).setVisible(true);
             }
         }else{ //user wants to search on some criteria
+            
+            ArrayList<Book> bookList = database.selectBookWhere(
+                etISBN0.getText(),
+                etTitle0.getText(),
+                etAuthor0.getText(),
+                etVolume0.getText(),
+                etOwn0.getText(),
+                etYear0.getText()
+            );
+            if(bookList.size() > 1){
+                String[] stringList = new String[bookList.size()];
+                for(int i = 0; i < bookList.size(); i++){
+                    stringList[i] = bookList.get(i).toString();
+                }
+                new ListBookFrame(stringList).setVisible(true);
+            }else if(bookList.size() == 1){
+                //detemine what kind of single book was found and display the appropriate frame
+                if(bookList.get(0) instanceof Manga)
+                    new IndivMangaFrame((Manga)bookList.get(0)).setVisible(true);
+                else if(bookList.get(0) instanceof Nostalgia)
+                    new IndivNostalgiaFrame((Nostalgia)bookList.get(0)).setVisible(true);
+                else
+                    new IndivBookFrame(bookList.get(0)).setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Nothing with those criteria was found in the database");
+            }
+            
+            /*
             ArrayList<Manga> mangaList = database.selectWhere(
                 etISBN0.getText(),
                 etTitle0.getText(),
                 etAuthor0.getText(),
                 etVolume0.getText(),
-                etOwn0.getText());
+                etOwn0.getText()
+            );
             if(mangaList.size() > 1){
                 String[] stringList = new String[mangaList.size()];
                 for(int i = 0; i < mangaList.size(); i++){
@@ -208,6 +238,7 @@ public class MainFrame extends javax.swing.JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Nothing with those criteria was found in the database");
             }
+            */
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
