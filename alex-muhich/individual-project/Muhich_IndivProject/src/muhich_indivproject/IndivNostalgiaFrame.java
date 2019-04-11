@@ -36,7 +36,7 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
         etYearNost = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         etOwnNost = new javax.swing.JTextField();
-        btnModifyNost = new javax.swing.JButton();
+        btnDeleteNost = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nostalgia");
@@ -70,10 +70,10 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
         etOwnNost.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         etOwnNost.setText("Yes");
 
-        btnModifyNost.setText("Modify");
-        btnModifyNost.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteNost.setText("Delete");
+        btnDeleteNost.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModifyNostActionPerformed(evt);
+                btnDeleteNostActionPerformed(evt);
             }
         });
 
@@ -96,8 +96,8 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
                     .addComponent(etAuthorNost, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(106, Short.MAX_VALUE)
-                .addComponent(btnModifyNost)
+                .addContainerGap(107, Short.MAX_VALUE)
+                .addComponent(btnDeleteNost)
                 .addGap(105, 105, 105))
         );
         layout.setVerticalGroup(
@@ -120,34 +120,19 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etOwnNost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnModifyNost)
+                .addComponent(btnDeleteNost)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnModifyNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyNostActionPerformed
-        //determine what action is being taken based on the text of the button
-        switch(btnModifyNost.getText()){
-            case "Modify":
-                //set the TextFields to be editable
-                etTitleNost.setEditable(true);
-                etAuthorNost.setEditable(true);
-                etOwnNost.setEditable(true);
-                //change the text property of the button to Save
-                btnModifyNost.setText("Save");
-                break;
-            case "Save":
-                //set the Textfields to be uneditable
-                etTitleNost.setEditable(false);
-                etAuthorNost.setEditable(false);
-                etOwnNost.setEditable(false);
-                btnModifyNost.setText("Modify");
-                //TODO: update the database with the changes
-                break;
-        }
-    }//GEN-LAST:event_btnModifyNostActionPerformed
+    private void btnDeleteNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteNostActionPerformed
+        SQLiteJDBC database = new SQLiteJDBC();
+        database.delete(etTitleNost.getText(), etAuthorNost.getText(), etOwnNost.getText(),
+                null, null, etYearNost.getText());
+        this.dispose();
+    }//GEN-LAST:event_btnDeleteNostActionPerformed
 
     /**
      * @param args the command line arguments
@@ -183,7 +168,7 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModifyNost;
+    private javax.swing.JButton btnDeleteNost;
     private javax.swing.JTextField etAuthorNost;
     private javax.swing.JTextField etOwnNost;
     private javax.swing.JTextField etTitleNost;

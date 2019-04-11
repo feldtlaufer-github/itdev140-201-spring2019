@@ -38,7 +38,7 @@ public class IndivBookFrame extends javax.swing.JFrame {
         etAuthorBook = new javax.swing.JTextField();
         ownLabelBook = new javax.swing.JLabel();
         etOwnBook = new javax.swing.JTextField();
-        btnModifyBook = new javax.swing.JButton();
+        btnDeleteBook = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Book");
@@ -65,10 +65,10 @@ public class IndivBookFrame extends javax.swing.JFrame {
         etOwnBook.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         etOwnBook.setText("Yes");
 
-        btnModifyBook.setText("Modify");
-        btnModifyBook.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteBook.setText("Delete");
+        btnDeleteBook.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModifyBookActionPerformed(evt);
+                btnDeleteBookActionPerformed(evt);
             }
         });
 
@@ -88,8 +88,8 @@ public class IndivBookFrame extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(87, 87, 87)
-                .addComponent(btnModifyBook)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addComponent(btnDeleteBook)
+                .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,34 +107,19 @@ public class IndivBookFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etOwnBook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnModifyBook)
+                .addComponent(btnDeleteBook)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnModifyBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyBookActionPerformed
-        //determine what action is being taken based on the text of the button
-        switch(btnModifyBook.getText()){
-            case "Modify":
-                //set the TextFields to be editable
-                etTitleBook.setEditable(true);
-                etAuthorBook.setEditable(true);
-                etOwnBook.setEditable(true);
-                //change the text property of the button to Save
-                btnModifyBook.setText("Save");
-                break;
-            case "Save":
-                //set the Textfields to be uneditable
-                etTitleBook.setEditable(false);
-                etAuthorBook.setEditable(false);
-                etOwnBook.setEditable(false);
-                btnModifyBook.setText("Modify");
-                //TODO: update the database with the changes
-                break;
-        }
-    }//GEN-LAST:event_btnModifyBookActionPerformed
+    private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
+        SQLiteJDBC database = new SQLiteJDBC();
+        database.delete(etTitleBook.getText(), etAuthorBook.getText(), etOwnBook.getText(),
+                null, null, null);
+        this.dispose();
+    }//GEN-LAST:event_btnDeleteBookActionPerformed
 
     /**
      * @param args the command line arguments
@@ -173,7 +158,7 @@ public class IndivBookFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabelBook;
-    private javax.swing.JButton btnModifyBook;
+    private javax.swing.JButton btnDeleteBook;
     private javax.swing.JTextField etAuthorBook;
     private javax.swing.JTextField etOwnBook;
     private javax.swing.JTextField etTitleBook;
