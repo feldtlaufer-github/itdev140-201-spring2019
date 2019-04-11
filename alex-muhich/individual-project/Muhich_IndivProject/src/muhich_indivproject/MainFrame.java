@@ -43,7 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
         etYear0 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("My Manga Collection");
+        setTitle("The Library");
         setResizable(false);
 
         isbnLabel0.setText("ISBN:");
@@ -287,6 +287,13 @@ public class MainFrame extends javax.swing.JFrame {
                     , etAuthor0.getText(),etOwn0.getText(), etVolume0.getText()));
         }
         */
+        //clear out what was added in the textfields to assist searching/adding new things
+        etISBN0.setText("");
+        etTitle0.setText("");
+        etAuthor0.setText("");
+        etOwn0.setText("");
+        etVolume0.setText("");
+        etYear0.setText("");
     }//GEN-LAST:event_btnAddActionPerformed
 
     /**

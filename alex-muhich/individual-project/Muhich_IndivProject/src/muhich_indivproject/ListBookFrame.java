@@ -31,7 +31,7 @@ public class ListBookFrame extends javax.swing.JFrame {
         lvBookList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Multiple Listings Found");
+        setTitle("Multiple Books Found");
         setResizable(false);
 
         lvBookList.setModel(new javax.swing.AbstractListModel<String>() {

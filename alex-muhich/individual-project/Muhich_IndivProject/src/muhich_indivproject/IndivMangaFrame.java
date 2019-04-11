@@ -42,7 +42,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         isbnLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("One Listing Found");
+        setTitle("Manga");
         setResizable(false);
 
         etISBN1.setEditable(false);

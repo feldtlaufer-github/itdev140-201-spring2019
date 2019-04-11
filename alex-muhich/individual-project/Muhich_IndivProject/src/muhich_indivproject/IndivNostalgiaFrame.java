@@ -39,6 +39,7 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
         btnModifyNost = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Nostalgia");
         setResizable(false);
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
