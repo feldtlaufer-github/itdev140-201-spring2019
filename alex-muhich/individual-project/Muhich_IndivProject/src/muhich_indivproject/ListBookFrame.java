@@ -25,19 +25,16 @@ public class ListBookFrame extends javax.swing.JFrame {
         lvBookList.setListData(stringList);
         
         //when a user clicks on a item in the list open that book's individual panel
-        lvBookList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                
-                int index = lvBookList.getSelectedIndex();
-                if(bookList[index] instanceof Manga){
-                    new IndivMangaFrame((Manga)bookList[index]).setVisible(true);
-                }else if(bookList[index] instanceof Nostalgia){
-                    new IndivNostalgiaFrame((Nostalgia)bookList[index]).setVisible(true);
-                }else{
-                    new IndivBookFrame(bookList[index]).setVisible(true);
-                }
+        lvBookList.addListSelectionListener((ListSelectionEvent e) -> {
+            int index = lvBookList.getSelectedIndex();
+            if(bookList[index] instanceof Manga){
+                new IndivMangaFrame((Manga)bookList[index]).setVisible(true);
+            }else if(bookList[index] instanceof Nostalgia){
+                new IndivNostalgiaFrame((Nostalgia)bookList[index]).setVisible(true);
+            }else{
+                new IndivBookFrame(bookList[index]).setVisible(true);
             }
+            this.dispose();
         });
     }
 
