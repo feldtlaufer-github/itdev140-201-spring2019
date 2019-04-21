@@ -40,7 +40,7 @@ public class IndivBookFrame extends javax.swing.JFrame {
         etOwnBook = new javax.swing.JTextField();
         btnDeleteBook = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book");
         setResizable(false);
 

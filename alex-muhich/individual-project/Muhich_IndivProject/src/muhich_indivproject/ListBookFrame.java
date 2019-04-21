@@ -1,6 +1,9 @@
 
 package muhich_indivproject;
 
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 
 /**
  *
@@ -12,10 +15,30 @@ public class ListBookFrame extends javax.swing.JFrame {
      * Creates new form ListMangaFrame
      * @param bookList
      */
-    public ListBookFrame(String[] bookList) {
+    public ListBookFrame(Book[] bookList) {
         initComponents();
-        lvBookList.setListData(bookList);
+        //get the toString list of the books to display in the JList
+        String[] stringList = new String[bookList.length];
+                for(int i = 0; i <  bookList.length; i++){
+                    stringList[i] = bookList[i].toString();
+                }
+        lvBookList.setListData(stringList);
         
+        //when a user clicks on a item in the list open that book's individual panel
+        lvBookList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                
+                int index = lvBookList.getSelectedIndex();
+                if(bookList[index] instanceof Manga){
+                    new IndivMangaFrame((Manga)bookList[index]).setVisible(true);
+                }else if(bookList[index] instanceof Nostalgia){
+                    new IndivNostalgiaFrame((Nostalgia)bookList[index]).setVisible(true);
+                }else{
+                    new IndivBookFrame(bookList[index]).setVisible(true);
+                }
+            }
+        });
     }
 
     /**
@@ -90,7 +113,7 @@ public class ListBookFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ListBookFrame(new String[0]).setVisible(true);
+            new ListBookFrame(new Book[0]).setVisible(true);
         });
     }
 

@@ -166,22 +166,9 @@ public class MainFrame extends javax.swing.JFrame {
             
             ArrayList<Book> bookList = database.selectAllBooks();
             if(bookList.size() > 1){
-                String[] stringList = new String[bookList.size()];
-                for(int i = 0; i <  bookList.size(); i++){
-                    stringList[i] = bookList.get(i).toString();
-                }
-                new ListBookFrame(stringList).setVisible(true);
+                new ListBookFrame(bookList.toArray(new Book[bookList.size()])).setVisible(true);
             }
-            /*
-            ArrayList<Manga> mangaList = database.selectAll();
-            if(mangaList.size() > 1){
-                String[] stringList = new String[mangaList.size()];
-                for(int i = 0; i < mangaList.size(); i++){
-                    stringList[i] = mangaList.get(i).toString();
-                }
-                new ListBookFrame(stringList).setVisible(true);
-            }
-            */
+            
             else if(bookList.size() == 1){
                 //detemine what kind of single book was found and display the appropriate frame
                 if(bookList.get(0) instanceof Manga)
@@ -205,11 +192,7 @@ public class MainFrame extends javax.swing.JFrame {
                 etYear0.getText()
             );
             if(bookList.size() > 1){
-                String[] stringList = new String[bookList.size()];
-                for(int i = 0; i < bookList.size(); i++){
-                    stringList[i] = bookList.get(i).toString();
-                }
-                new ListBookFrame(stringList).setVisible(true);
+                new ListBookFrame(bookList.toArray(new Book[bookList.size()])).setVisible(true);
             }else if(bookList.size() == 1){
                 //detemine what kind of single book was found and display the appropriate frame
                 if(bookList.get(0) instanceof Manga)
@@ -221,27 +204,6 @@ public class MainFrame extends javax.swing.JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Nothing with those criteria was found in the database");
             }
-            
-            /*
-            ArrayList<Manga> mangaList = database.selectWhere(
-                etISBN0.getText(),
-                etTitle0.getText(),
-                etAuthor0.getText(),
-                etVolume0.getText(),
-                etOwn0.getText()
-            );
-            if(mangaList.size() > 1){
-                String[] stringList = new String[mangaList.size()];
-                for(int i = 0; i < mangaList.size(); i++){
-                    stringList[i] = mangaList.get(i).toString();
-                }
-                new ListBookFrame(stringList).setVisible(true);
-            }else if(mangaList.size() == 1){
-                new IndivMangaFrame(mangaList.get(0)).setVisible(true);
-            }else{
-                JOptionPane.showMessageDialog(null, "Nothing with those criteria was found in the database");
-            }
-            */
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -250,7 +212,7 @@ public class MainFrame extends javax.swing.JFrame {
         if(etAuthor0.getText().isEmpty() ||
             etTitle0.getText().isEmpty() ||
             etOwn0.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Please don't leave Author, Title, or Own fields blank");
+            JOptionPane.showMessageDialog(null, "Please don't leave Title, Author, or Own fields blank");
         }
         //if isbn, volume, and year are blank, then we're adding a normal book
         else if(etISBN0.getText().isEmpty() &&
@@ -275,18 +237,6 @@ public class MainFrame extends javax.swing.JFrame {
             database.insertBook(null, etTitle0.getText(),
                     etAuthor0.getText(), null, etOwn0.getText(), etYear0.getText());
         }
-        /*
-        else{
-            //add the info to the database
-            
-            database.insertBook(etISBN0.getText(), etTitle0.getText(),
-                    etAuthor0.getText(), etVolume0.getText(), etOwn0.getText(), etYear0.getText());
-            
-            
-            database.insert(new Manga(etISBN0.getText(), etTitle0.getText()
-                    , etAuthor0.getText(),etOwn0.getText(), etVolume0.getText()));
-        }
-        */
         //clear out what was added in the textfields to assist searching/adding new things
         etISBN0.setText("");
         etTitle0.setText("");
