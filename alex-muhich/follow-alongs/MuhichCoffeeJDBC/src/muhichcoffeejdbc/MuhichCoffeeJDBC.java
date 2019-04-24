@@ -21,8 +21,8 @@ public class MuhichCoffeeJDBC {
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             dropTables(conn);
             buildCoffeeTable(conn);
-            //buildCustomerTable(conn);
-            //buildUnpaidOrderTable(conn);
+            buildCustomerTable(conn);
+            buildUnpaidOrderTable(conn);
             conn.commit();
             conn.close();
             
