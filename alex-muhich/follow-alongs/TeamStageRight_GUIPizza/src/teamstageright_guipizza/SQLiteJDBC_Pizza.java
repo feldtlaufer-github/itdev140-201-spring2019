@@ -37,7 +37,6 @@ public class SQLiteJDBC_Pizza {
      * @return  
      */
     public ArrayList<Customer> selectCustomerInfo(String phoneNum){
-        ArrayList<Customer> customerList = new ArrayList<>();
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
             stmt.execute("SELECT Name, Address, PhoneNum, "
@@ -48,26 +47,56 @@ public class SQLiteJDBC_Pizza {
                     + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId"
                     + "WHERE PhoneNum LIKE '%" + phoneNum + "%'");
             try (ResultSet resultSet = stmt.executeQuery("")) { //TODO: remember to replace "" with the query
-                HashMap<Double, ArrayList<Pizza>> orderMap = new HashMap<>();
+                ArrayList<Customer> customerList = new ArrayList<>();
+                HashMap<String, Customer> customerMap = new HashMap<>();
+                
                 while(resultSet.next()){
-                    
                     String name = resultSet.getString("Name");
                     String address = resultSet.getString("Address");
                     String phone = resultSet.getString("PhoneNum");
                     
-                    //toppings, id, size
-                    Pizza pizza = new Pizza(resultSet.getString("Toppings"),
-                                            resultSet.getDouble("PizzaId"),
-                                            resultSet.getString("Size"));
-                    //if the hashmap doesn't have this order, add the order
-                    if(!orderMap.containsKey(resultSet.getDouble("OrderNum"))){
+                    //we haven't seen this customer before
+                    if(!customerMap.containsKey(phone)){
                         ArrayList<Pizza> pizzaList = new ArrayList<>();
-                        pizzaList.add(pizza);
-                        orderMap.put(resultSet.getDouble("OrderNum"), pizzaList);
-                    }else{//if the hashmap has the order, add the pizza to the existing order
-                        orderMap.get(resultSet.getDouble("OrderNum")).add(pizza);
+                        pizzaList.add(new Pizza(resultSet.getString("Toppings"),
+                                        resultSet.getDouble("PizzaId"),
+                                        resultSet.getString("Size")));
+                        ArrayList<Order> orderList = new ArrayList<>();
+                        orderList.add(new Order(resultSet.getString("DeliveryMethod"),
+                                                resultSet.getDouble("OrderNum"),
+                                                pizzaList));
+                        customerMap.put(phone, new Customer(name, address, phone, orderList));
+                        
+                        
+                    }else{//we've already seen this customer
+                        //we haven't seen an order from this customer before
+                        if(customerMap.get(phone).getOrderList().isEmpty()){
+                            ArrayList<Pizza> pizzaList = new ArrayList<>();
+                            pizzaList.add(new Pizza(resultSet.getString("Toppings"),
+                                            resultSet.getDouble("PizzaId"),
+                                            resultSet.getString("Size")));
+                            ArrayList<Order> orderList = new ArrayList<>();
+                            orderList.add(new Order(resultSet.getString("DeliveryMethod"),
+                                                    resultSet.getDouble("OrderNum"),
+                                                    pizzaList));
+                            customerMap.put(phone, new Customer(name, address, phone, orderList));
+                        }else{//we have seen an order from this customer before
+                            //for each order the customer has
+                            for(int i = 0; i < customerMap.get(phone).getOrderList().size(); i++){
+                                //if the query line's ordernum matches an ordernum in the orderlist
+                                if(customerMap.get(phone).getOrderList().get(i).getOrderNum() ==
+                                        resultSet.getDouble("OrderNum")){
+                                    //add this pizza to the orderlist
+                                    customerMap.get(phone).getOrderList().get(i).getPizzaList().add(
+                                                        new Pizza(resultSet.getString("Toppings"),
+                                                                  resultSet.getDouble("PizzaId"),
+                                                                  resultSet.getString("Size")));
+                                }
+                            }   
+                        }
                     }
                 }
+                //grab each customer in customermap and put it into customerList and return.
             }
         }catch(SQLException ex){
             
