@@ -37,6 +37,7 @@ public class SQLiteJDBC_Pizza {
      * @return  
      */
     public ArrayList<Customer> selectCustomerInfo(String phoneNum){
+        HashMap<String, Customer> customerMap = new HashMap<>();
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
             stmt.execute("SELECT Name, Address, PhoneNum, "
@@ -47,8 +48,7 @@ public class SQLiteJDBC_Pizza {
                     + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId"
                     + "WHERE PhoneNum LIKE '%" + phoneNum + "%'");
             try (ResultSet resultSet = stmt.executeQuery("")) { //TODO: remember to replace "" with the query
-                ArrayList<Customer> customerList = new ArrayList<>();
-                HashMap<String, Customer> customerMap = new HashMap<>();
+                
                 
                 while(resultSet.next()){
                     String name = resultSet.getString("Name");
@@ -97,11 +97,12 @@ public class SQLiteJDBC_Pizza {
                     }
                 }
                 //grab each customer in customermap and put it into customerList and return.
+                
             }
         }catch(SQLException ex){
             
         }
-        return customerList;
+        return new ArrayList<>(customerMap.values());
     }
     
     private void buildCustomerTable(Connection conn){
