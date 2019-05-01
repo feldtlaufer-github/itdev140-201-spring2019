@@ -21,6 +21,12 @@ public class Customer {
         this.orderList = orderList;
     }
 
+    @Override
+    public String toString() {
+        return "Customer{" + "name=" + name + ", address=" + address + ", phone=" + phone + ", orderList=" + orderList + '}';
+    }
+    
+    
     public ArrayList<Order> getOrderList() {
         return orderList;
     }

@@ -16,7 +16,7 @@ import java.util.HashMap;
  */
 public class SQLiteJDBC_Pizza {
     public SQLiteJDBC_Pizza(){
-        final String DB_URL = "jdbc:derby:GUIPizzaDB9;create=true";
+        final String DB_URL = "jdbc:derby:GUIPizzaDB17;create=true";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             buildPizzaTable(conn);
             buildOrderTable(conn);
@@ -24,10 +24,10 @@ public class SQLiteJDBC_Pizza {
             
             ArrayList<Order> orderList = new ArrayList<>();
             ArrayList<Pizza> pizzaList = new ArrayList<>();
-            pizzaList.add(new Pizza("Mushroom", 991, "Small"));
-            orderList.add(new Order("Pick-up", 199, pizzaList));
+            pizzaList.add(new Pizza("Mushroom", 991.0, "Small"));
+            orderList.add(new Order("Pick-up", 199.0, pizzaList));
             insertCustomerInfo(new Customer("Alex", "1234 Penny Lane", "4145551234", orderList));
-            //System.out.println(selectCustomerInfo("4145551234").get(0).toString());
+            System.out.println(selectCustomerInfo("4145551234").get(0).toString());
             
             conn.commit();
             conn.close();
@@ -38,7 +38,7 @@ public class SQLiteJDBC_Pizza {
     }
     
     public void insertCustomerInfo(Customer c){
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB9;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB17;")){
             Statement stmt = conn.createStatement();
             //string toppings, double pizza id, string size
             for(int i = 0; i < c.getOrderList().size(); i++){
@@ -50,13 +50,13 @@ public class SQLiteJDBC_Pizza {
                     + "' )");
                 }
             }
-            //string delivery method, double orderid, double pizzaid
+            //string delivery method, double pizzaid, double orderid
             for(int i = 0; i < c.getOrderList().size(); i++){
                 for(int j = 0; j < c.getOrderList().get(i).getPizzaList().size(); j++){
                     stmt.execute("INSERT INTO Orders VALUES ( '"
                         + c.getOrderList().get(i).getDeliveryMethod() + "', "
-                        + c.getOrderList().get(i).getOrderNum() + ", "
-                        + c.getOrderList().get(i).getPizzaList().get(j).getPizzaId()
+                        + c.getOrderList().get(i).getPizzaList().get(j).getPizzaId() + ", "
+                        + c.getOrderList().get(i).getOrderNum()
                         + " )");
                 }
             }
@@ -82,22 +82,16 @@ public class SQLiteJDBC_Pizza {
      */
     public ArrayList<Customer> selectCustomerInfo(String phoneNum){
         HashMap<String, Customer> customerMap = new HashMap<>();
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB17;")){
             Statement stmt = conn.createStatement();
-            stmt.execute("SELECT Name, Address, PhoneNum, "
-                    + "Orders.DeliveryMethod AS Delivery, Orders.OrderNum AS OrderNum, "
-                    + "Pizzas.PizzaId AS PizzaId, Pizzas.Size AS Size, Pizzas.Toppings AS Toppings"
-                    + "FROM Customers "
-                    + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
-                    + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId"
-                    + "WHERE PhoneNum LIKE '%" + phoneNum + "%'");
+            
             try (ResultSet resultSet = stmt.executeQuery("SELECT Name, Address, PhoneNum, "
                     + "Orders.DeliveryMethod AS Delivery, Orders.OrderNum AS OrderNum, "
-                    + "Pizzas.PizzaId AS PizzaId, Pizzas.Size AS Size, Pizzas.Toppings AS Toppings"
+                    + "Pizzas.PizzaId AS PizzaId, Pizzas.Size AS Size, Pizzas.Toppings AS Toppings "
                     + "FROM Customers "
                     + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
-                    + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId"
-                    + "WHERE PhoneNum LIKE '%" + phoneNum + "%'")) { //TODO: remember to replace "" with the query
+                    + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId "
+                    + "WHERE PhoneNum LIKE '%" + phoneNum + "%'")) { 
                 
                 
                 while(resultSet.next()){
@@ -112,7 +106,7 @@ public class SQLiteJDBC_Pizza {
                                         resultSet.getDouble("PizzaId"),
                                         resultSet.getString("Size")));
                         ArrayList<Order> orderList = new ArrayList<>();
-                        orderList.add(new Order(resultSet.getString("DeliveryMethod"),
+                        orderList.add(new Order(resultSet.getString("Delivery"),
                                                 resultSet.getDouble("OrderNum"),
                                                 pizzaList));
                         customerMap.put(phone, new Customer(name, address, phone, orderList));
