@@ -15,6 +15,10 @@ import java.util.HashMap;
  * @author 
  */
 public class SQLiteJDBC_Pizza {
+    
+    
+    //TODO: Update/Delete need to be implemented, also change db so you don't have to do db18, 19, 20...
+    
     public SQLiteJDBC_Pizza(){
         final String DB_URL = "jdbc:derby:GUIPizzaDB17;create=true";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
