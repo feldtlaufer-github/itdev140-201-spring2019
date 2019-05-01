@@ -45,10 +45,16 @@ public class SQLiteJDBC_Pizza {
         }
     }
     //delete from pizzas where pizzaid = 
+    /*
+    DELETE  T2
+    FROM   Table2 as T2 INNER JOIN Table1 as T1
+    ON     T1. Id = T1 .Id;
+    */
     public void delete(String phoneNum){
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
             Statement stmt = conn.createStatement();
             //something like this
+            stmt.execute("DELETE  FROM ");
             stmt.execute("SELECT Pizzas.PizzaId AS PizzaId, PhoneNum "
                     + "FROM Customers "
                     + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
