@@ -16,11 +16,18 @@ import java.util.HashMap;
  */
 public class SQLiteJDBC_Pizza {
     public SQLiteJDBC_Pizza(){
-        final String DB_URL = "jdbc:derby:GUIPizzaDB;create=true";
+        final String DB_URL = "jdbc:derby:GUIPizzaDB9;create=true";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            buildCustomerTable(conn);
-            buildOrderTable(conn);
             buildPizzaTable(conn);
+            buildOrderTable(conn);
+            buildCustomerTable(conn);
+            
+            ArrayList<Order> orderList = new ArrayList<>();
+            ArrayList<Pizza> pizzaList = new ArrayList<>();
+            pizzaList.add(new Pizza("Mushroom", 991, "Small"));
+            orderList.add(new Order("Pick-up", 199, pizzaList));
+            insertCustomerInfo(new Customer("Alex", "1234 Penny Lane", "4145551234", orderList));
+            //System.out.println(selectCustomerInfo("4145551234").get(0).toString());
             
             conn.commit();
             conn.close();
@@ -30,8 +37,45 @@ public class SQLiteJDBC_Pizza {
         }
     }
     
+    public void insertCustomerInfo(Customer c){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB9;")){
+            Statement stmt = conn.createStatement();
+            //string toppings, double pizza id, string size
+            for(int i = 0; i < c.getOrderList().size(); i++){
+                for(int j = 0; j < c.getOrderList().get(i).getPizzaList().size(); j++){
+                    stmt.execute("INSERT INTO Pizzas VALUES ( '"
+                    + c.getOrderList().get(i).getPizzaList().get(j).getToppings() + "', "
+                    + c.getOrderList().get(i).getPizzaList().get(j).getPizzaId() + ", '"
+                    + c.getOrderList().get(i).getPizzaList().get(j).getSize()
+                    + "' )");
+                }
+            }
+            //string delivery method, double orderid, double pizzaid
+            for(int i = 0; i < c.getOrderList().size(); i++){
+                for(int j = 0; j < c.getOrderList().get(i).getPizzaList().size(); j++){
+                    stmt.execute("INSERT INTO Orders VALUES ( '"
+                        + c.getOrderList().get(i).getDeliveryMethod() + "', "
+                        + c.getOrderList().get(i).getOrderNum() + ", "
+                        + c.getOrderList().get(i).getPizzaList().get(j).getPizzaId()
+                        + " )");
+                }
+            }
+            //string name, string address, string phonenum, double orderid
+            for(int i = 0; i < c.getOrderList().size(); i++){
+                stmt.execute("INSERT INTO Customers VALUES ( '"
+                        + c.getName() + "', '"
+                        + c.getAddress() + "', '"
+                        + c.getPhone() + "', "
+                        + c.getOrderList().get(i).getOrderNum()
+                        + " )");
+            }
+            
+        }catch(SQLException ex){
+            System.out.println("Error Insert: " + ex.getMessage());
+        }
+    }
     /**
-     * phone number is unique identifer
+     * phone number is unique identifier
      * returns customer information (name, address, phone)
      * @param phoneNum 
      * @return  
@@ -47,7 +91,13 @@ public class SQLiteJDBC_Pizza {
                     + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
                     + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId"
                     + "WHERE PhoneNum LIKE '%" + phoneNum + "%'");
-            try (ResultSet resultSet = stmt.executeQuery("")) { //TODO: remember to replace "" with the query
+            try (ResultSet resultSet = stmt.executeQuery("SELECT Name, Address, PhoneNum, "
+                    + "Orders.DeliveryMethod AS Delivery, Orders.OrderNum AS OrderNum, "
+                    + "Pizzas.PizzaId AS PizzaId, Pizzas.Size AS Size, Pizzas.Toppings AS Toppings"
+                    + "FROM Customers "
+                    + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
+                    + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId"
+                    + "WHERE PhoneNum LIKE '%" + phoneNum + "%'")) { //TODO: remember to replace "" with the query
                 
                 
                 while(resultSet.next()){
@@ -100,7 +150,7 @@ public class SQLiteJDBC_Pizza {
                 
             }
         }catch(SQLException ex){
-            
+            System.out.println("Error: " + ex.getMessage());
         }
         return new ArrayList<>(customerMap.values());
     }
@@ -111,9 +161,10 @@ public class SQLiteJDBC_Pizza {
             stmt.execute("CREATE TABLE Customers(" + 
                     "Name CHAR(25), " +
                     "Address CHAR(50), " +
-                    "PhoneNum CHAR(12) NOT NULL PRIMARY KEY, " +
+                    "PhoneNum CHAR(12) PRIMARY KEY, " +
                     "OrderNum DOUBLE, " +
                     "FOREIGN KEY (OrderNum) REFERENCES Orders(OrderNum))");
+            System.out.println("customer table created");
         }catch(SQLException ex){
             System.out.println("Error: " + ex.getMessage());
         }
@@ -124,8 +175,9 @@ public class SQLiteJDBC_Pizza {
             stmt.execute("CREATE TABLE Orders(" + 
                     "DeliveryMethod CHAR(12), " +
                     "PizzaId DOUBLE, " +
-                    "OrderNum DOUBLE, " +
+                    "OrderNum DOUBLE PRIMARY KEY, " +
                     "FOREIGN KEY (PizzaId) REFERENCES Pizzas(PizzaId))");
+            System.out.println("order table created");
         }catch(SQLException ex){
             System.out.println("Error: " + ex.getMessage());
         }
@@ -134,9 +186,10 @@ public class SQLiteJDBC_Pizza {
         try{
             Statement stmt = conn.createStatement();
             stmt.execute("CREATE TABLE Pizzas(" + 
-                    "Size CHAR(10), " +
-                    "PizzaId DOUBLE, " +
-                    "Toppings CHAR(100))");
+                    "Toppings CHAR(100), " +
+                    "PizzaId DOUBLE PRIMARY KEY, " +
+                    "Size CHAR(10))");
+            System.out.println("pizza table created");
         }catch(SQLException ex){
             System.out.println("Error: " + ex.getMessage());
         }

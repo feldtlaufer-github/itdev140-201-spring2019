@@ -5,6 +5,7 @@
  */
 package teamstageright_guipizza;
 
+
 /**
  *
  * @author plain
@@ -15,6 +16,7 @@ public class TeamStageRight_GUIPizza {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        SQLiteJDBC_Pizza sqlpizza = new SQLiteJDBC_Pizza();
         
     }
     
