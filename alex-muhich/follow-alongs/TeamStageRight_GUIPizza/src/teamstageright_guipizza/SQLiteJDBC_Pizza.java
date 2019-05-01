@@ -18,9 +18,10 @@ public class SQLiteJDBC_Pizza {
     
     
     //TODO: Update/Delete need to be implemented, also change db so you don't have to do db18, 19, 20...
+    //pizzaid and ordernum be autoincrement
     
     public SQLiteJDBC_Pizza(){
-        final String DB_URL = "jdbc:derby:GUIPizzaDB17;create=true";
+        final String DB_URL = "jdbc:derby:GUIPizzaDB18;create=true";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             buildPizzaTable(conn);
             buildOrderTable(conn);
@@ -33,6 +34,9 @@ public class SQLiteJDBC_Pizza {
             insertCustomerInfo(new Customer("Alex", "1234 Penny Lane", "4145551234", orderList));
             System.out.println(selectCustomerInfo("4145551234").get(0).toString());
             
+            update("4145551234", new Customer("Steve", "1234 Penny Lane", "4145551234", orderList));
+            System.out.println(selectCustomerInfo("4145551234").get(0).toString());
+            
             conn.commit();
             conn.close();
             
@@ -40,9 +44,65 @@ public class SQLiteJDBC_Pizza {
             System.out.println("Error: " + ex.getMessage());
         }
     }
+    //delete from pizzas where pizzaid = 
+    public void delete(String phoneNum){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
+            Statement stmt = conn.createStatement();
+            //something like this
+            stmt.execute("SELECT Pizzas.PizzaId AS PizzaId, PhoneNum "
+                    + "FROM Customers "
+                    + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
+                    + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId "
+                    + "WHERE PhoneNum  = '" + phoneNum + "'"
+            );
+            
+            
+        }catch(SQLException ex){
+            
+        }
+    }
+    
+    /*
+    UPDATE table_name
+    SET column1 = value1, column2 = value2, ...
+    WHERE condition;
+    */
+    
+    public void update(String phoneNum, Customer newCustomer){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
+            Statement stmt = conn.createStatement();
+            //name address, phone
+            stmt.execute("UPDATE Customers "
+                    + "SET Name = '" + newCustomer.getName() + "', "
+                        + "Address = '" + newCustomer.getAddress() + "', "
+                        + "PhoneNum = '" + newCustomer.getPhone() + "' "
+                    + "WHERE PhoneNum = '" + phoneNum + "'"
+            );
+            for(int i = 0; i < newCustomer.getOrderList().size(); i++){
+                stmt.execute("UPDATE Orders "
+                    + "SET DeliveryMethod = '" + newCustomer.getOrderList().get(i).getDeliveryMethod() + "' "
+                    + "WHERE OrderNum = " + newCustomer.getOrderList().get(i).getOrderNum()
+                );
+            }
+            for(int i = 0; i < newCustomer.getOrderList().size(); i++){
+                for(int j = 0; j < newCustomer.getOrderList().get(i).getPizzaList().size(); j++){
+                    stmt.execute("UPDATE Pizzas "
+                        + "SET Size = '" + newCustomer.getOrderList().get(i).getPizzaList().get(j).getSize() + "', "
+                            + "Toppings = '" + newCustomer.getOrderList().get(i).getPizzaList().get(j).getToppings() + "' "
+                        + "WHERE PizzaId = " + newCustomer.getOrderList().get(i).getPizzaList().get(j).getPizzaId()
+                );
+                }
+            }
+            
+            
+            
+        }catch(SQLException ex){
+            System.out.println("Error Insert: " + ex.getMessage());
+        }
+    }
     
     public void insertCustomerInfo(Customer c){
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB17;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
             Statement stmt = conn.createStatement();
             //string toppings, double pizza id, string size
             for(int i = 0; i < c.getOrderList().size(); i++){
@@ -86,7 +146,7 @@ public class SQLiteJDBC_Pizza {
      */
     public ArrayList<Customer> selectCustomerInfo(String phoneNum){
         HashMap<String, Customer> customerMap = new HashMap<>();
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB17;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
             Statement stmt = conn.createStatement();
             
             try (ResultSet resultSet = stmt.executeQuery("SELECT Name, Address, PhoneNum, "
@@ -161,7 +221,7 @@ public class SQLiteJDBC_Pizza {
                     "Address CHAR(50), " +
                     "PhoneNum CHAR(12) PRIMARY KEY, " +
                     "OrderNum DOUBLE, " +
-                    "FOREIGN KEY (OrderNum) REFERENCES Orders(OrderNum))");
+                    "FOREIGN KEY (OrderNum) REFERENCES Orders(OrderNum) ON DELETE CASCADE)");
             System.out.println("customer table created");
         }catch(SQLException ex){
             System.out.println("Error: " + ex.getMessage());
@@ -174,7 +234,7 @@ public class SQLiteJDBC_Pizza {
                     "DeliveryMethod CHAR(12), " +
                     "PizzaId DOUBLE, " +
                     "OrderNum DOUBLE PRIMARY KEY, " +
-                    "FOREIGN KEY (PizzaId) REFERENCES Pizzas(PizzaId))");
+                    "FOREIGN KEY (PizzaId) REFERENCES Pizzas(PizzaId) ON DELETE CASCADE)");
             System.out.println("order table created");
         }catch(SQLException ex){
             System.out.println("Error: " + ex.getMessage());
