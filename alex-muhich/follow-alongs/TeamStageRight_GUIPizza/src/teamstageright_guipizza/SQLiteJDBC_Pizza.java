@@ -2,6 +2,7 @@
 package teamstageright_guipizza;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -205,9 +206,7 @@ public class SQLiteJDBC_Pizza {
                             }   
                         }
                     }
-                }
-                //grab each customer in customermap and put it into customerList and return.
-                
+                }                
             }
         }catch(SQLException ex){
             System.out.println("Error Select: " + ex.getMessage());
@@ -217,39 +216,57 @@ public class SQLiteJDBC_Pizza {
     
     private void buildCustomerTable(Connection conn){
         try{
-            Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE Customers(" + 
-                    "Name CHAR(25), " +
-                    "Address CHAR(50), " +
-                    "PhoneNum CHAR(12) PRIMARY KEY, " +
-                    "OrderNum INTEGER, " +
-                    "FOREIGN KEY (OrderNum) REFERENCES Orders(OrderNum) ON DELETE CASCADE)");
-            System.out.println("customer table created");
+            DatabaseMetaData dbmd = conn.getMetaData();
+            ResultSet rs = dbmd.getTables(null, null, "CUSTOMERS", null);
+            if(!rs.next()){
+                Statement stmt = conn.createStatement();
+                stmt.execute("CREATE TABLE Customers(" + 
+                        "Name CHAR(25), " +
+                        "Address CHAR(50), " +
+                        "PhoneNum CHAR(12) PRIMARY KEY, " +
+                        "OrderNum INTEGER, " +
+                        "FOREIGN KEY (OrderNum) REFERENCES Orders(OrderNum) ON DELETE CASCADE)");
+                System.out.println("customer table created");
+            }
+            
+            
         }catch(SQLException ex){
             System.out.println("Error Build Customers: " + ex.getMessage());
         }
     }
     private void buildOrderTable(Connection conn){
         try{
-            Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE Orders(" + 
-                    "DeliveryMethod CHAR(12), " +
-                    "PizzaId INTEGER, " +
-                    "OrderNum INTEGER PRIMARY KEY, " +
-                    "FOREIGN KEY (PizzaId) REFERENCES Pizzas(PizzaId) ON DELETE CASCADE)");
-            System.out.println("order table created");
+            DatabaseMetaData dbmd = conn.getMetaData();
+            ResultSet rs = dbmd.getTables(null, null, "ORDERS", null);
+            if(!rs.next()){
+                Statement stmt = conn.createStatement();
+                stmt.execute("CREATE TABLE Orders(" + 
+                        "DeliveryMethod CHAR(12), " +
+                        "PizzaId INTEGER, " +
+                        "OrderNum INTEGER PRIMARY KEY, " +
+                        "FOREIGN KEY (PizzaId) REFERENCES Pizzas(PizzaId) ON DELETE CASCADE)");
+                System.out.println("order table created");
+            }
+            
+            
         }catch(SQLException ex){
             System.out.println("Error Build Orders: " + ex.getMessage());
         }
     }
     private void buildPizzaTable(Connection conn){
         try{
-            Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE Pizzas(" + 
-                    "Toppings CHAR(100), " +
-                    "PizzaId INTEGER PRIMARY KEY, " +
-                    "Size CHAR(10))");
-            System.out.println("pizza table created");
+            DatabaseMetaData dbmd = conn.getMetaData();
+            ResultSet rs = dbmd.getTables(null, null, "PIZZAS", null);
+            if(!rs.next()){
+                Statement stmt = conn.createStatement();
+                stmt.execute("CREATE TABLE Pizzas(" + 
+                        "Toppings CHAR(100), " +
+                        "PizzaId INTEGER PRIMARY KEY, " +
+                        "Size CHAR(10))");
+                System.out.println("pizza table created");
+            }
+            
+            
         }catch(SQLException ex){
             System.out.println("Error Build Pizzas: " + ex.getMessage());
         }
