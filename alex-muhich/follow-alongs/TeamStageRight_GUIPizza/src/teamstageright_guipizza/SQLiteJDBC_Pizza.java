@@ -17,10 +17,6 @@ import java.util.HashMap;
  */
 public class SQLiteJDBC_Pizza {
     
-    
-    //TODO: Update/Delete need to be implemented, also change db so you don't have to do db18, 19, 20...
-    //pizzaid and ordernum be autoincrement
-    
     public SQLiteJDBC_Pizza(){
         final String DB_URL = "jdbc:derby:GUIPizzaDB;create=true";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
@@ -28,6 +24,7 @@ public class SQLiteJDBC_Pizza {
             buildOrderTable(conn);
             buildCustomerTable(conn);
             
+            //delete me before running for realsies vvvvvvvvvvvvvv
             ArrayList<Order> orderList = new ArrayList<>();
             ArrayList<Pizza> pizzaList = new ArrayList<>();
             pizzaList.add(new Pizza("Mushroom", 991, "Small"));
@@ -41,19 +38,16 @@ public class SQLiteJDBC_Pizza {
             delete("4145551234");
             System.out.println(selectCustomerInfo("4145551234"));
             
-            conn.commit();
-            conn.close();
+            //delete me before running for realsies^^^^^^^^^^
             
         }catch(SQLException ex){
             System.out.println("Error Main: " + ex.getMessage());
         }
     }
-    //delete from pizzas where pizzaid = 
-    /*
-    DELETE  T2
-    FROM   Table2 as T2 INNER JOIN Table1 as T1
-    ON     T1. Id = T1 .Id;
-    */
+    /**
+     * deletes all of the customer data with that phone number
+     * @param phoneNum 
+     */
     public void delete(String phoneNum){
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
@@ -65,11 +59,12 @@ public class SQLiteJDBC_Pizza {
         }
     }
     
-    /*
-    UPDATE table_name
-    SET column1 = value1, column2 = value2, ...
-    WHERE condition;
-    */
+    /**
+     * Takes in a phonenumber and the new customer information
+     * updating a phonenumber is not allowed, must delete then re-insert
+     * @param phoneNum
+     * @param newCustomer 
+     */
     
     public void update(String phoneNum, Customer newCustomer){
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
@@ -78,7 +73,6 @@ public class SQLiteJDBC_Pizza {
             stmt.execute("UPDATE Customers "
                     + "SET Name = '" + newCustomer.getName() + "', "
                         + "Address = '" + newCustomer.getAddress() + "', "
-                        + "PhoneNum = '" + newCustomer.getPhone() + "' "
                     + "WHERE PhoneNum = '" + phoneNum + "'"
             );
             for(int i = 0; i < newCustomer.getOrderList().size(); i++){
@@ -103,7 +97,10 @@ public class SQLiteJDBC_Pizza {
             System.out.println("Error Update: " + ex.getMessage());
         }
     }
-    
+    /**
+     * takes in a customer object and inserts it into the db
+     * @param c 
+     */
     public void insertCustomerInfo(Customer c){
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
@@ -142,10 +139,10 @@ public class SQLiteJDBC_Pizza {
         }
     }
     /**
-     * phone number is unique identifier
-     * returns customer information (name, address, phone)
-     * @param phoneNum 
-     * @return  
+     * Takes a phone number string and returns an arraylist of customers
+     * with that phone number
+     * @param phoneNum String
+     * @return
      */
     public ArrayList<Customer> selectCustomerInfo(String phoneNum){
         HashMap<String, Customer> customerMap = new HashMap<>();
