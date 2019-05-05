@@ -21,7 +21,7 @@ public class SQLiteJDBC_Pizza {
     //pizzaid and ordernum be autoincrement
     
     public SQLiteJDBC_Pizza(){
-        final String DB_URL = "jdbc:derby:GUIPizzaDB18;create=true";
+        final String DB_URL = "jdbc:derby:GUIPizzaDB;create=true";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             buildPizzaTable(conn);
             buildOrderTable(conn);
@@ -29,19 +29,22 @@ public class SQLiteJDBC_Pizza {
             
             ArrayList<Order> orderList = new ArrayList<>();
             ArrayList<Pizza> pizzaList = new ArrayList<>();
-            pizzaList.add(new Pizza("Mushroom", 991.0, "Small"));
-            orderList.add(new Order("Pick-up", 199.0, pizzaList));
+            pizzaList.add(new Pizza("Mushroom", 991, "Small"));
+            orderList.add(new Order("Pick-up", 199, pizzaList));
             insertCustomerInfo(new Customer("Alex", "1234 Penny Lane", "4145551234", orderList));
             System.out.println(selectCustomerInfo("4145551234").get(0).toString());
             
             update("4145551234", new Customer("Steve", "1234 Penny Lane", "4145551234", orderList));
             System.out.println(selectCustomerInfo("4145551234").get(0).toString());
             
+            delete("4145551234");
+            System.out.println(selectCustomerInfo("4145551234"));
+            
             conn.commit();
             conn.close();
             
         }catch(SQLException ex){
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error Main: " + ex.getMessage());
         }
     }
     //delete from pizzas where pizzaid = 
@@ -51,20 +54,13 @@ public class SQLiteJDBC_Pizza {
     ON     T1. Id = T1 .Id;
     */
     public void delete(String phoneNum){
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
-            //something like this
-            stmt.execute("DELETE  FROM ");
-            stmt.execute("SELECT Pizzas.PizzaId AS PizzaId, PhoneNum "
-                    + "FROM Customers "
-                    + "INNER JOIN Orders ON Customers.OrderNum = Orders.OrderNum "
-                    + "INNER JOIN Pizzas ON Orders.PizzaId = Pizzas.PizzaId "
-                    + "WHERE PhoneNum  = '" + phoneNum + "'"
-            );
             
-            
+            stmt.execute("DELETE FROM Customers WHERE PhoneNum = '" + phoneNum + "'");
+                        
         }catch(SQLException ex){
-            
+            System.out.println("Error Delete: " + ex.getMessage());
         }
     }
     
@@ -75,7 +71,7 @@ public class SQLiteJDBC_Pizza {
     */
     
     public void update(String phoneNum, Customer newCustomer){
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
             //name address, phone
             stmt.execute("UPDATE Customers "
@@ -103,14 +99,14 @@ public class SQLiteJDBC_Pizza {
             
             
         }catch(SQLException ex){
-            System.out.println("Error Insert: " + ex.getMessage());
+            System.out.println("Error Update: " + ex.getMessage());
         }
     }
     
     public void insertCustomerInfo(Customer c){
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
-            //string toppings, double pizza id, string size
+            //string toppings, int pizza id, string size
             for(int i = 0; i < c.getOrderList().size(); i++){
                 for(int j = 0; j < c.getOrderList().get(i).getPizzaList().size(); j++){
                     stmt.execute("INSERT INTO Pizzas VALUES ( '"
@@ -120,7 +116,7 @@ public class SQLiteJDBC_Pizza {
                     + "' )");
                 }
             }
-            //string delivery method, double pizzaid, double orderid
+            //string delivery method, int pizzaid, int orderid
             for(int i = 0; i < c.getOrderList().size(); i++){
                 for(int j = 0; j < c.getOrderList().get(i).getPizzaList().size(); j++){
                     stmt.execute("INSERT INTO Orders VALUES ( '"
@@ -130,7 +126,7 @@ public class SQLiteJDBC_Pizza {
                         + " )");
                 }
             }
-            //string name, string address, string phonenum, double orderid
+            //string name, string address, string phonenum, int orderid
             for(int i = 0; i < c.getOrderList().size(); i++){
                 stmt.execute("INSERT INTO Customers VALUES ( '"
                         + c.getName() + "', '"
@@ -152,7 +148,7 @@ public class SQLiteJDBC_Pizza {
      */
     public ArrayList<Customer> selectCustomerInfo(String phoneNum){
         HashMap<String, Customer> customerMap = new HashMap<>();
-        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB18;")){
+        try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
             
             try (ResultSet resultSet = stmt.executeQuery("SELECT Name, Address, PhoneNum, "
@@ -173,11 +169,11 @@ public class SQLiteJDBC_Pizza {
                     if(!customerMap.containsKey(phone)){
                         ArrayList<Pizza> pizzaList = new ArrayList<>();
                         pizzaList.add(new Pizza(resultSet.getString("Toppings"),
-                                        resultSet.getDouble("PizzaId"),
+                                        resultSet.getInt("PizzaId"),
                                         resultSet.getString("Size")));
                         ArrayList<Order> orderList = new ArrayList<>();
                         orderList.add(new Order(resultSet.getString("Delivery"),
-                                                resultSet.getDouble("OrderNum"),
+                                                resultSet.getInt("OrderNum"),
                                                 pizzaList));
                         customerMap.put(phone, new Customer(name, address, phone, orderList));
                         
@@ -187,11 +183,11 @@ public class SQLiteJDBC_Pizza {
                         if(customerMap.get(phone).getOrderList().isEmpty()){
                             ArrayList<Pizza> pizzaList = new ArrayList<>();
                             pizzaList.add(new Pizza(resultSet.getString("Toppings"),
-                                            resultSet.getDouble("PizzaId"),
+                                            resultSet.getInt("PizzaId"),
                                             resultSet.getString("Size")));
                             ArrayList<Order> orderList = new ArrayList<>();
                             orderList.add(new Order(resultSet.getString("DeliveryMethod"),
-                                                    resultSet.getDouble("OrderNum"),
+                                                    resultSet.getInt("OrderNum"),
                                                     pizzaList));
                             customerMap.put(phone, new Customer(name, address, phone, orderList));
                         }else{//we have seen an order from this customer before
@@ -199,11 +195,11 @@ public class SQLiteJDBC_Pizza {
                             for(int i = 0; i < customerMap.get(phone).getOrderList().size(); i++){
                                 //if the query line's ordernum matches an ordernum in the orderlist
                                 if(customerMap.get(phone).getOrderList().get(i).getOrderNum() ==
-                                        resultSet.getDouble("OrderNum")){
+                                        resultSet.getInt("OrderNum")){
                                     //add this pizza to the orderlist
                                     customerMap.get(phone).getOrderList().get(i).getPizzaList().add(
                                                         new Pizza(resultSet.getString("Toppings"),
-                                                                  resultSet.getDouble("PizzaId"),
+                                                                  resultSet.getInt("PizzaId"),
                                                                   resultSet.getString("Size")));
                                 }
                             }   
@@ -214,7 +210,7 @@ public class SQLiteJDBC_Pizza {
                 
             }
         }catch(SQLException ex){
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error Select: " + ex.getMessage());
         }
         return new ArrayList<>(customerMap.values());
     }
@@ -226,11 +222,11 @@ public class SQLiteJDBC_Pizza {
                     "Name CHAR(25), " +
                     "Address CHAR(50), " +
                     "PhoneNum CHAR(12) PRIMARY KEY, " +
-                    "OrderNum DOUBLE, " +
+                    "OrderNum INTEGER, " +
                     "FOREIGN KEY (OrderNum) REFERENCES Orders(OrderNum) ON DELETE CASCADE)");
             System.out.println("customer table created");
         }catch(SQLException ex){
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error Build Customers: " + ex.getMessage());
         }
     }
     private void buildOrderTable(Connection conn){
@@ -238,12 +234,12 @@ public class SQLiteJDBC_Pizza {
             Statement stmt = conn.createStatement();
             stmt.execute("CREATE TABLE Orders(" + 
                     "DeliveryMethod CHAR(12), " +
-                    "PizzaId DOUBLE, " +
-                    "OrderNum DOUBLE PRIMARY KEY, " +
+                    "PizzaId INTEGER, " +
+                    "OrderNum INTEGER PRIMARY KEY, " +
                     "FOREIGN KEY (PizzaId) REFERENCES Pizzas(PizzaId) ON DELETE CASCADE)");
             System.out.println("order table created");
         }catch(SQLException ex){
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error Build Orders: " + ex.getMessage());
         }
     }
     private void buildPizzaTable(Connection conn){
@@ -251,11 +247,11 @@ public class SQLiteJDBC_Pizza {
             Statement stmt = conn.createStatement();
             stmt.execute("CREATE TABLE Pizzas(" + 
                     "Toppings CHAR(100), " +
-                    "PizzaId DOUBLE PRIMARY KEY, " +
+                    "PizzaId INTEGER PRIMARY KEY, " +
                     "Size CHAR(10))");
             System.out.println("pizza table created");
         }catch(SQLException ex){
-            System.out.println("Error: " + ex.getMessage());
+            System.out.println("Error Build Pizzas: " + ex.getMessage());
         }
     }
 }

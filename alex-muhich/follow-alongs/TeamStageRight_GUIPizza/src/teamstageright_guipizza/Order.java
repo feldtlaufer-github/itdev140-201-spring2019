@@ -13,10 +13,10 @@ import java.util.ArrayList;
  */
 public class Order {
     private String deliveryMethod;
-    private double orderNum;
+    private int orderNum;
     private ArrayList<Pizza> pizzaList;
 
-    public Order(String deliveryMethod, double orderNum, ArrayList<Pizza> pizzaList) {
+    public Order(String deliveryMethod, int orderNum, ArrayList<Pizza> pizzaList) {
         this.deliveryMethod = deliveryMethod;
         this.orderNum = orderNum;
         this.pizzaList = pizzaList;
@@ -39,11 +39,11 @@ public class Order {
         this.deliveryMethod = deliveryMethod;
     }
 
-    public double getOrderNum() {
+    public int getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(double orderNum) {
+    public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
     }
     
