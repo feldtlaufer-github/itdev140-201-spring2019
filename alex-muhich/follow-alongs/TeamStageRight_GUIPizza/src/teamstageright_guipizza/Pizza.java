@@ -11,9 +11,9 @@ package teamstageright_guipizza;
  */
 public class Pizza {
     private String toppings, size;
-    private double pizzaId;
+    private int pizzaId;
 
-    public Pizza(String toppings, double pizzaId, String size) {
+    public Pizza(String toppings, int pizzaId, String size) {
         this.toppings = toppings;
         this.pizzaId = pizzaId;
         this.size = size;
@@ -36,11 +36,11 @@ public class Pizza {
         this.toppings = toppings;
     }
 
-    public double getPizzaId() {
+    public int getPizzaId() {
         return pizzaId;
     }
 
-    public void setPizzaId(double pizzaId) {
+    public void setPizzaId(int pizzaId) {
         this.pizzaId = pizzaId;
     }
     
