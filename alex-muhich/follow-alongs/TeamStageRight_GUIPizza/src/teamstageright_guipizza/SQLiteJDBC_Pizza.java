@@ -24,22 +24,6 @@ public class SQLiteJDBC_Pizza {
             buildOrderTable(conn);
             buildCustomerTable(conn);
             
-            //delete me before running for realsies vvvvvvvvvvvvvv
-            ArrayList<Order> orderList = new ArrayList<>();
-            ArrayList<Pizza> pizzaList = new ArrayList<>();
-            pizzaList.add(new Pizza("Mushroom", 991, "Small"));
-            orderList.add(new Order("Pick-up", 199, pizzaList));
-            insertCustomerInfo(new Customer("Alex", "1234 Penny Lane", "4145551234", orderList));
-            System.out.println(selectCustomerInfo("4145551234").get(0).toString());
-            
-            update("4145551234", new Customer("Steve", "1234 Penny Lane", "4145551234", orderList));
-            System.out.println(selectCustomerInfo("4145551234").get(0).toString());
-            
-            delete("4145551234");
-            System.out.println(selectCustomerInfo("4145551234"));
-            
-            //delete me before running for realsies^^^^^^^^^^
-            
         }catch(SQLException ex){
             System.out.println("Error Main: " + ex.getMessage());
         }
@@ -104,6 +88,7 @@ public class SQLiteJDBC_Pizza {
     public void insertCustomerInfo(Customer c){
         try(Connection conn = DriverManager.getConnection("jdbc:derby:GUIPizzaDB;")){
             Statement stmt = conn.createStatement();
+            
             //string toppings, int pizza id, string size
             for(int i = 0; i < c.getOrderList().size(); i++){
                 for(int j = 0; j < c.getOrderList().get(i).getPizzaList().size(); j++){
