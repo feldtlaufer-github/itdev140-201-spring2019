@@ -32,6 +32,8 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btnInstruct" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnAdd" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -113,6 +115,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnInstruct" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -180,6 +183,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="etYear0">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnInstruct">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Instructions"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInstructActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

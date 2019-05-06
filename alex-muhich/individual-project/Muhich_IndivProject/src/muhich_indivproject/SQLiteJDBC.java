@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -45,6 +47,74 @@ public class SQLiteJDBC {
             System.exit(0);
         }
     }
+    /**
+     * 
+     * @param oldISBN
+     * @param oldTitle
+     * @param oldAuthor
+     * @param oldOwnership
+     * @param oldYear
+     * @param _isbn
+     * @param _title
+     * @param _author
+     * @param _volume
+     * @param _ownership
+     * @param _year 
+     */
+    public void updateBook(String oldISBN, String oldTitle, String oldAuthor,
+            String oldOwnership, String oldYear, String _isbn, String _title,
+            String _author, String _volume, String _ownership, String _year){
+        try{
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:books.db");
+            connection.setAutoCommit(false);
+            
+            statement = connection.createStatement();
+            String sql;
+            
+            //Manga, ISBN is functionally a primary key
+            if(_isbn != null && _volume != null){
+                sql = "UPDATE Books SET isbn = '" + _isbn + "', title = '" + _title
+                        + "', author = '" + _author + "', volume = '" + _volume
+                        + "', ownership = '" + _ownership + "' WHERE isbn = '" + oldISBN + "'"
+                        ;
+            }
+            //Nostalgia, I don't currently have a primary key
+            else if(_year != null){
+                sql = "UPDATE Books SET title = '" + _title
+                        + "', author = '" + _author + "', ownership = '" + _ownership
+                        + "', year = '" + _year
+                        + "' WHERE title = '" + oldTitle + "' AND author = '" + oldAuthor
+                        + "' AND ownership = '" + oldOwnership + "' AND year = '" + oldYear + "'" 
+                        ;
+            }
+            //Book, I don't currently have a primary key
+            else{
+                sql = "UPDATE Books SET title = '" + _title + "', author = '" + _author
+                        + "', ownership = '" + _ownership + "' WHERE title = '" + oldTitle
+                        + "' AND author = '" + oldAuthor + "' AND ownership = '" + oldOwnership + "'"
+                        ;
+            }          
+            
+            statement.executeUpdate(sql);
+            statement.close();
+            connection.commit();
+            connection.close();
+            
+        }catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(SQLiteJDBC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * 
+     * @param _isbn
+     * @param _title
+     * @param _author
+     * @param _volume
+     * @param _ownership
+     * @param _year 
+     */
     public void insertBook(String _isbn, String _title, String _author, String _volume,
             String _ownership, String _year){
         try{
@@ -55,19 +125,24 @@ public class SQLiteJDBC {
             
             statement = connection.createStatement();
             String sql;
+            //Manga
             if(_isbn != null && _volume != null){
                 Manga book = new Manga(_isbn, _title, _author, _volume, _ownership);
                 sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
                     "VALUES ('" + book.getIsbn() + "', '" + book.getTitle() +
                     "', '" + book.getAuthor() + "', '" + book.getVolume()  +
                     "', '" + book.getOwnership() + "', NULL );";
-            }else if(_year != null){
+            }
+            //Nostalgia
+            else if(_year != null){
                 Nostalgia book = new Nostalgia(_title, _author, _ownership, _year);
                 sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
                     "VALUES (NULL, '" + book.getTitle() +
                     "', '" + book.getAuthor() + "', NULL, '" + book.getOwnership() +
                     "', '" + book.getYear() + "' );";
-            }else{
+            }
+            //Book
+            else{
                 Book book = new Book(_title, _author, _ownership);
                 sql = "INSERT INTO Books (isbn,title,author,volume,ownership,year) " +
                     "VALUES (NULL, '" + book.getTitle() +
@@ -153,6 +228,10 @@ public class SQLiteJDBC {
         }
         return bookList;
     }
+    /**
+     * 
+     * @return 
+     */
     public ArrayList<Book> selectAllBooks(){
         ArrayList<Book> bookList = new ArrayList<>();
         try{
@@ -174,7 +253,7 @@ public class SQLiteJDBC {
                     if(isbn != null && volume != null){
                         bookList.add(new Manga(isbn, title, author, volume, ownership));
                     }else if(year != null){
-                        bookList.add(new Nostalgia(title, author, year, ownership));
+                        bookList.add(new Nostalgia(title, author, ownership, year));
                     }else{
                         bookList.add(new Book(title, author, ownership));
                     }
