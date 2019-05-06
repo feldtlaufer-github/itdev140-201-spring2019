@@ -41,6 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         yearLabel0 = new javax.swing.JLabel();
         etYear0 = new javax.swing.JTextField();
+        btnInstruct = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("The Library");
@@ -74,6 +75,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         yearLabel0.setText("Year:");
 
+        btnInstruct.setText("Instructions");
+        btnInstruct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInstructActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,6 +93,8 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnSearch)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnInstruct)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnAdd))
                             .addGroup(layout.createSequentialGroup()
@@ -144,7 +154,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearch)
-                    .addComponent(btnAdd))
+                    .addComponent(btnAdd)
+                    .addComponent(btnInstruct))
                 .addContainerGap())
         );
 
@@ -157,7 +168,8 @@ public class MainFrame extends javax.swing.JFrame {
            etAuthor0.getText().isEmpty() &&
            etTitle0.getText().isEmpty() &&
            etOwn0.getText().isEmpty() &&
-           etVolume0.getText().isEmpty()){
+           etVolume0.getText().isEmpty() &&
+           etYear0.getText().isEmpty()){
             /*
             do a selectAll and convert to string array to display if multiple entries found
             if the database has only one item for some reason, i want it displayed
@@ -220,6 +232,7 @@ public class MainFrame extends javax.swing.JFrame {
                  etYear0.getText().isEmpty()
                 ){
             database.insertBook(null, etTitle0.getText(), etAuthor0.getText(), null, etOwn0.getText(), null);
+            clearFields();
         }
         //if isbn and volume are not blank, and year is, then we're adding a manga
         else if(!etISBN0.getText().isEmpty() &&
@@ -228,6 +241,7 @@ public class MainFrame extends javax.swing.JFrame {
                 ){
             database.insertBook(etISBN0.getText(), etTitle0.getText(),
                     etAuthor0.getText(), etVolume0.getText(), etOwn0.getText(), null);
+            clearFields();
         }
         //if isbn and volume are blank, and year isn't, then we're adding a nostalgia
         else if(etISBN0.getText().isEmpty() &&
@@ -236,15 +250,32 @@ public class MainFrame extends javax.swing.JFrame {
                 ){
             database.insertBook(null, etTitle0.getText(),
                     etAuthor0.getText(), null, etOwn0.getText(), etYear0.getText());
+            clearFields();
         }
-        //clear out what was added in the textfields to assist searching/adding new things
+        //if it's any other case, notify the user that it's an invalid entry
+        else{
+            JOptionPane.showMessageDialog(null, "Please double check instructions for proper data entry.");
+        }
+        
+    }//GEN-LAST:event_btnAddActionPerformed
+    /*
+    Helper method that clears out the textfields
+    */
+    private void clearFields(){
         etISBN0.setText("");
         etTitle0.setText("");
         etAuthor0.setText("");
         etOwn0.setText("");
         etVolume0.setText("");
         etYear0.setText("");
-    }//GEN-LAST:event_btnAddActionPerformed
+    }
+    
+    private void btnInstructActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInstructActionPerformed
+        JOptionPane.showMessageDialog(null, "Search on all fields empty is 'Search All'.\n"
+                + "Manga have ISBN, Title, Author, Ownership, and Volume.\n"
+                + "Nostalgia have Title, Author, Ownership, and Year.\n"
+                + "Other Books have Title, Author, and Ownership");
+    }//GEN-LAST:event_btnInstructActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,6 +312,7 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel0;
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnInstruct;
     private javax.swing.JButton btnSearch;
     private javax.swing.JTextField etAuthor0;
     private javax.swing.JTextField etISBN0;
