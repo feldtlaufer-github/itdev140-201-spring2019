@@ -6,12 +6,13 @@ package muhich_indivproject;
  * @author Alex Jerard Muhich
  */
 public class IndivMangaFrame extends javax.swing.JFrame {
-
+    private Manga manga;
     /**
      * Creates new form IndivMangaFrame
      * @param manga
      */
     public IndivMangaFrame(Manga manga) {
+        this.manga = manga;
         initComponents();
         etISBN1.setText(manga.getIsbn());
         etTitle1.setText(manga.getTitle());
@@ -40,6 +41,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         authorLabel1 = new javax.swing.JLabel();
         titleLabel1 = new javax.swing.JLabel();
         isbnLabel1 = new javax.swing.JLabel();
+        btnModifyManga = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Manga");
@@ -87,6 +89,13 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         isbnLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         isbnLabel1.setText("ISBN");
 
+        btnModifyManga.setText("Modify");
+        btnModifyManga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyMangaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -97,18 +106,18 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                     .addComponent(ownLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(etISBN1)
                     .addComponent(etTitle1)
-                    .addComponent(etAuthor1)
+                    .addComponent(etAuthor1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                     .addComponent(etVolume1)
                     .addComponent(etOwn1)
                     .addComponent(volumeLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(authorLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(titleLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(isbnLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(isbnLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnModifyManga)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDeleteManga, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(btnDeleteManga, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +143,9 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etOwn1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addComponent(btnDeleteManga)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDeleteManga)
+                    .addComponent(btnModifyManga))
                 .addContainerGap())
         );
 
@@ -151,6 +162,35 @@ public class IndivMangaFrame extends javax.swing.JFrame {
                 etISBN1.getText(), etVolume1.getText(), null);
         this.dispose();
     }//GEN-LAST:event_btnDeleteMangaActionPerformed
+    /**
+     * 
+     * @param evt 
+     */
+    private void btnModifyMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyMangaActionPerformed
+        if(btnModifyManga.getText().equals("Save")){
+            SQLiteJDBC database = new SQLiteJDBC();
+            database.updateBook(manga.getIsbn(), manga.getTitle(), manga.getAuthor(), manga.getOwnership(),
+                    null, etISBN1.getText(), etTitle1.getText(), etAuthor1.getText(), etVolume1.getText(),
+                    etOwn1.getText(), null);
+            //set the text fields to be uneditable
+            etAuthor1.setEditable(false);
+            etOwn1.setEditable(false);
+            etTitle1.setEditable(false);
+            etVolume1.setEditable(false);
+            etISBN1.setEditable(false);
+        }
+        //Modify
+        else{
+            //allow the text fields to be editable
+            etAuthor1.setEditable(true);
+            etOwn1.setEditable(true);
+            etTitle1.setEditable(true);
+            etVolume1.setEditable(true);
+            etISBN1.setEditable(true);
+            //change the button text to save
+            btnModifyManga.setText("Save");
+        }
+    }//GEN-LAST:event_btnModifyMangaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,6 +227,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabel1;
     private javax.swing.JButton btnDeleteManga;
+    private javax.swing.JButton btnModifyManga;
     private javax.swing.JTextField etAuthor1;
     private javax.swing.JTextField etISBN1;
     private javax.swing.JTextField etOwn1;

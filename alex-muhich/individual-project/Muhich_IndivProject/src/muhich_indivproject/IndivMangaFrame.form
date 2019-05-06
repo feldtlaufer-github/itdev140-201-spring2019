@@ -31,20 +31,20 @@
                   <Component id="ownLabel1" max="32767" attributes="0"/>
                   <Component id="etISBN1" max="32767" attributes="0"/>
                   <Component id="etTitle1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="etAuthor1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="etAuthor1" alignment="0" pref="259" max="32767" attributes="0"/>
                   <Component id="etVolume1" max="32767" attributes="0"/>
                   <Component id="etOwn1" alignment="0" max="32767" attributes="0"/>
                   <Component id="volumeLabel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="authorLabel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="titleLabel1" alignment="0" max="32767" attributes="0"/>
                   <Component id="isbnLabel1" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="btnModifyManga" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnDeleteManga" min="-2" pref="97" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
-              <Component id="btnDeleteManga" min="-2" pref="97" max="-2" attributes="0"/>
-              <EmptySpace pref="88" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -72,7 +72,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="etOwn1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="btnDeleteManga" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnDeleteManga" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnModifyManga" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -151,6 +154,14 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="ISBN"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnModifyManga">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Modify"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModifyMangaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

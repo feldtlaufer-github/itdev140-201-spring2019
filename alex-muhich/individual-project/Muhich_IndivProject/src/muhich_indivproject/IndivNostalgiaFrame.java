@@ -6,12 +6,13 @@ package muhich_indivproject;
  * @author Alex Jerard Muhich
  */
 public class IndivNostalgiaFrame extends javax.swing.JFrame {
-
+    Nostalgia nost;
     /**
      * Creates new form IndivNostalgiaFrame
      * @param nost
      */
     public IndivNostalgiaFrame(Nostalgia nost) {
+        this.nost = nost;
         initComponents();
         etTitleNost.setText(nost.getTitle());
         etAuthorNost.setText(nost.getAuthor());
@@ -37,6 +38,7 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         etOwnNost = new javax.swing.JTextField();
         btnDeleteNost = new javax.swing.JButton();
+        btnModifyNost = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nostalgia");
@@ -77,6 +79,13 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
             }
         });
 
+        btnModifyNost.setText("Modify");
+        btnModifyNost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyNostActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,14 +100,14 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(etTitleNost)
+                    .addComponent(etTitleNost, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(etAuthorNost, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(etAuthorNost, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnModifyNost)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDeleteNost)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(107, Short.MAX_VALUE)
-                .addComponent(btnDeleteNost)
-                .addGap(105, 105, 105))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,9 +128,11 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etOwnNost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnDeleteNost)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDeleteNost)
+                    .addComponent(btnModifyNost))
+                .addContainerGap())
         );
 
         pack();
@@ -133,6 +144,33 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
                 null, null, etYearNost.getText());
         this.dispose();
     }//GEN-LAST:event_btnDeleteNostActionPerformed
+    /**
+     * 
+     * @param evt 
+     */
+    private void btnModifyNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyNostActionPerformed
+        if(btnModifyNost.getText().equals("Save")){
+            SQLiteJDBC database = new SQLiteJDBC();
+            database.updateBook(null, nost.getTitle(), nost.getAuthor(), nost.getOwnership(),
+                    nost.getYear(), null, etTitleNost.getText(), etAuthorNost.getText(), null,
+                    etOwnNost.getText(), etYearNost.getText());
+            //set the text fields to be uneditable
+            etAuthorNost.setEditable(false);
+            etOwnNost.setEditable(false);
+            etTitleNost.setEditable(false);
+            etYearNost.setEditable(false);
+        }
+        //Modify
+        else{
+            //allow the text fields to be editable
+            etAuthorNost.setEditable(true);
+            etOwnNost.setEditable(true);
+            etTitleNost.setEditable(true);
+            etYearNost.setEditable(true);
+            //change the button text to save
+            btnModifyNost.setText("Save");
+        }
+    }//GEN-LAST:event_btnModifyNostActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,6 +207,7 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeleteNost;
+    private javax.swing.JButton btnModifyNost;
     private javax.swing.JTextField etAuthorNost;
     private javax.swing.JTextField etOwnNost;
     private javax.swing.JTextField etTitleNost;

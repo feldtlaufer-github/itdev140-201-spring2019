@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package muhich_indivproject;
 
 /**
- *
- * @author plain
+ * JFrame of an individual book's information. The user can modify or delete this entry
+ * @author Alex Jerard Muhich
  */
 public class IndivBookFrame extends javax.swing.JFrame {
-
+    private Book book; //helper variable to remember old info when modifying the entry
     /**
      * Creates new form IndivBookFrame
      * @param book
      */
     public IndivBookFrame(Book book) {
+        this.book = book;
         initComponents();
         etTitleBook.setText(book.getTitle());
         etAuthorBook.setText(book.getAuthor());
@@ -39,6 +35,7 @@ public class IndivBookFrame extends javax.swing.JFrame {
         ownLabelBook = new javax.swing.JLabel();
         etOwnBook = new javax.swing.JTextField();
         btnDeleteBook = new javax.swing.JButton();
+        btnModifyBook = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Book");
@@ -72,6 +69,13 @@ public class IndivBookFrame extends javax.swing.JFrame {
             }
         });
 
+        btnModifyBook.setText("Modify");
+        btnModifyBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModifyBookActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -80,16 +84,16 @@ public class IndivBookFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(etOwnBook)
-                    .addComponent(etAuthorBook)
+                    .addComponent(etAuthorBook, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                     .addComponent(etTitleBook, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(titleLabelBook, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(authorLabelBook, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ownLabelBook, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(ownLabelBook, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnModifyBook)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDeleteBook)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(87, 87, 87)
-                .addComponent(btnDeleteBook)
-                .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,20 +110,51 @@ public class IndivBookFrame extends javax.swing.JFrame {
                 .addComponent(ownLabelBook)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(etOwnBook, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDeleteBook)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDeleteBook)
+                    .addComponent(btnModifyBook))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Deletes this book from the database and closes it's window.
+     * @param evt 
+     */
     private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
         SQLiteJDBC database = new SQLiteJDBC();
         database.delete(etTitleBook.getText(), etAuthorBook.getText(), etOwnBook.getText(),
                 null, null, null);
         this.dispose();
     }//GEN-LAST:event_btnDeleteBookActionPerformed
+    /**
+     * If modify is clicked, it allows the data to be edited and then the user can save
+     * the data, if the user X's out before saving, the data won't be changed.
+     * @param evt 
+     */
+    private void btnModifyBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyBookActionPerformed
+        if(btnModifyBook.getText().equals("Save")){
+            SQLiteJDBC database = new SQLiteJDBC();
+            database.updateBook(null, book.getTitle(), book.getAuthor(), book.getOwnership(),
+                    null, null, etTitleBook.getText(), etAuthorBook.getText(), null,
+                    etOwnBook.getText(), null);
+            //set the text fields to be uneditable
+            etAuthorBook.setEditable(false);
+            etOwnBook.setEditable(false);
+            etTitleBook.setEditable(false);
+        }
+        //Modify
+        else{
+            //allow the text fields to be editable
+            etAuthorBook.setEditable(true);
+            etOwnBook.setEditable(true);
+            etTitleBook.setEditable(true);
+            //change the button text to save
+            btnModifyBook.setText("Save");
+        }
+    }//GEN-LAST:event_btnModifyBookActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,16 +184,15 @@ public class IndivBookFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new IndivBookFrame(new Book(null, null, null)).setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new IndivBookFrame(new Book(null, null, null)).setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel authorLabelBook;
     private javax.swing.JButton btnDeleteBook;
+    private javax.swing.JButton btnModifyBook;
     private javax.swing.JTextField etAuthorBook;
     private javax.swing.JTextField etOwnBook;
     private javax.swing.JTextField etTitleBook;
