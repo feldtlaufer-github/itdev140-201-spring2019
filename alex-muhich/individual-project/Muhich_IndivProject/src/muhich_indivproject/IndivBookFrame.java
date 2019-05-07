@@ -13,6 +13,7 @@ public class IndivBookFrame extends javax.swing.JFrame {
     public IndivBookFrame(Book book) {
         this.book = book;
         initComponents();
+        //display the books info on the page
         etTitleBook.setText(book.getTitle());
         etAuthorBook.setText(book.getAuthor());
         etOwnBook.setText(book.getOwnership());

@@ -1,12 +1,15 @@
 
 package muhich_indivproject;
 
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 
 /**
- *
+ * Shows data for books if multiple are found that matched the search query
  * @author Alex Jerard Muhich
  */
 public class ListBookFrame extends javax.swing.JFrame {
@@ -36,8 +39,27 @@ public class ListBookFrame extends javax.swing.JFrame {
             }
             this.dispose();
         });
+        
+        //alternate color backgrounds to facilitate ease of differentiating data
+        lvBookList.setCellRenderer( new ColorCellRenderer());
     }
-
+    /**
+     * private helper class to change color of alternating data in Jlist
+     */
+    private static class ColorCellRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            if ( index % 2 == 0 ) {
+                c.setBackground( Color.cyan );
+            }
+            else {
+                c.setBackground( Color.pink );
+            }
+            return c;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

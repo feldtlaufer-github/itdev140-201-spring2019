@@ -2,7 +2,7 @@
 package muhich_indivproject;
 
 /**
- *
+ * JFrame of an individual manga's information. The user can modify or delete this entry
  * @author Alex Jerard Muhich
  */
 public class IndivMangaFrame extends javax.swing.JFrame {
@@ -14,6 +14,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
     public IndivMangaFrame(Manga manga) {
         this.manga = manga;
         initComponents();
+        //display the manga's information
         etISBN1.setText(manga.getIsbn());
         etTitle1.setText(manga.getTitle());
         etAuthor1.setText(manga.getAuthor());
@@ -153,7 +154,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Allows the user to modify/save the values for the manga
+     * Deletes this book from the database and closes it's window.
      * @param evt 
      */
     private void btnDeleteMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMangaActionPerformed
@@ -163,7 +164,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnDeleteMangaActionPerformed
     /**
-     * 
+     * Allows the user to modify/save the values for the manga
      * @param evt 
      */
     private void btnModifyMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyMangaActionPerformed

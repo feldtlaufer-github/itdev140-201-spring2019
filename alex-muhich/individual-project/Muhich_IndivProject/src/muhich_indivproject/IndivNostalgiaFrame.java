@@ -2,7 +2,7 @@
 package muhich_indivproject;
 
 /**
- *
+ * JFrame of an individual nostalgia's information. The user can modify or delete this entry
  * @author Alex Jerard Muhich
  */
 public class IndivNostalgiaFrame extends javax.swing.JFrame {
@@ -14,6 +14,7 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
     public IndivNostalgiaFrame(Nostalgia nost) {
         this.nost = nost;
         initComponents();
+        //display the nost's information
         etTitleNost.setText(nost.getTitle());
         etAuthorNost.setText(nost.getAuthor());
         etYearNost.setText(nost.getYear());
@@ -137,7 +138,10 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Deletes this book from the database and closes it's window.
+     * @param evt 
+     */
     private void btnDeleteNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteNostActionPerformed
         SQLiteJDBC database = new SQLiteJDBC();
         database.delete(etTitleNost.getText(), etAuthorNost.getText(), etOwnNost.getText(),
@@ -145,7 +149,8 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnDeleteNostActionPerformed
     /**
-     * 
+     * If modify is clicked, it allows the data to be edited and then the user can save
+     * the data, if the user X's out before saving, the data won't be changed.
      * @param evt 
      */
     private void btnModifyNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyNostActionPerformed
