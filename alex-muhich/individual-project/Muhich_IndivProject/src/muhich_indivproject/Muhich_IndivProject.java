@@ -2,7 +2,7 @@
 package muhich_indivproject;
 
 /**
- *
+ * Controller class
  * @author Alex Jerard Muhich
  */
 public class Muhich_IndivProject {

@@ -10,7 +10,7 @@ public class Manga extends Book{
     private String isbn, volume;
 
     /**
-     * 
+     * Constructor
      * @param isbn
      * @param title
      * @param author
@@ -22,35 +22,38 @@ public class Manga extends Book{
         this.isbn = isbn;
         this.volume = volume;
     }
-
+    /**
+     * toString method for JList mainly
+     * @return 
+     */
     @Override
     public String toString(){
         return "<html>ISBN: " + isbn + "<br>Title: " + getTitle() + "<br>Author: " + getAuthor()
                  + "<br>Volume: " + volume + "<br>Own?: " + getOwnership() + "</html>";
     }
     /**
-     * 
+     * ISBN Getter
      * @return 
      */
     public String getIsbn(){
         return isbn;
     }
     /**
-     * 
+     * ISBN Setter
      * @param isbn 
      */
     public void setIsbn(String isbn){
         this.isbn = isbn;
     }
     /**
-     * 
+     * Volume Getter
      * @return 
      */
     public String getVolume() {
         return volume;
     }
     /**
-     * 
+     * Volume Setter
      * @param volume 
      */
     public void setVolume(String volume) {

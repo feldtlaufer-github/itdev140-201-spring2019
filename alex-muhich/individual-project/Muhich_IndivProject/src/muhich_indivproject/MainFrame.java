@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
- *
+ *  First frame of the program, allows the user to search or add books
  * @author Alex Jerard Muhich
  */
 public class MainFrame extends javax.swing.JFrame {
@@ -162,6 +162,11 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * All empty fields is a search all
+     * Otherwise it searches based on substring of what was entered
+     * @param evt 
+     */
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         //search for all is invoked by hitting search with all search fields empty
         if(etISBN0.getText().isEmpty() &&
@@ -219,6 +224,11 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    /**
+     * Adds the book that is inferred based on the data given
+     * If excess or insufficient data is given, a message is given to check instructions
+     * @param evt 
+     */
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         //all books have these fields, so they can't be empty
         if(etAuthor0.getText().isEmpty() ||
@@ -269,7 +279,10 @@ public class MainFrame extends javax.swing.JFrame {
         etVolume0.setText("");
         etYear0.setText("");
     }
-    
+    /**
+     * Displays instructions as Message
+     * @param evt 
+     */
     private void btnInstructActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInstructActionPerformed
         JOptionPane.showMessageDialog(null, "Search on all fields empty is 'Search All'.\n"
                 + "Manga have ISBN, Title, Author, Ownership, and Volume.\n"

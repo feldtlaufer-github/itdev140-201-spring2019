@@ -49,14 +49,14 @@ public class ListBookFrame extends javax.swing.JFrame {
     private static class ColorCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-            Component c = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            Component component = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
             if ( index % 2 == 0 ) {
-                c.setBackground( Color.cyan );
+                component.setBackground( Color.cyan );
             }
             else {
-                c.setBackground( Color.pink );
+                component.setBackground( Color.pink );
             }
-            return c;
+            return component;
         }
     }
     

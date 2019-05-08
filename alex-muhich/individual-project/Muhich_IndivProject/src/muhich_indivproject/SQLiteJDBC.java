@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 
 /**
- *
+ * SQL class that interacts with the database
  * @author Alex Jerard Muhich
  */
 public class SQLiteJDBC {
@@ -48,7 +48,7 @@ public class SQLiteJDBC {
         }
     }
     /**
-     * 
+     * Update Query
      * @param oldISBN
      * @param oldTitle
      * @param oldAuthor
@@ -107,7 +107,7 @@ public class SQLiteJDBC {
     }
     
     /**
-     * 
+     * Insert Query
      * @param _isbn
      * @param _title
      * @param _author
@@ -161,7 +161,7 @@ public class SQLiteJDBC {
         }
     }
     /**
-     * 
+     * Select Query
      * @param _isbn
      * @param _title
      * @param _author
@@ -181,6 +181,7 @@ public class SQLiteJDBC {
             
             statement = connection.createStatement();
             
+            //build the query based on what needs to be searched on
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("SELECT * FROM Books WHERE 1 = 1 ");
             if(!_isbn.isEmpty()) {
@@ -201,7 +202,7 @@ public class SQLiteJDBC {
             if(!_year.isEmpty()) {
                 stringBuilder.append(" AND year LIKE '%").append(_year).append("%'");
             }
-            
+            //look through the result set to assemble books to display
             try (ResultSet resultSet = statement.executeQuery(stringBuilder.toString())) {
                 while(resultSet.next()){
                     //grab attributes of the book
@@ -229,7 +230,7 @@ public class SQLiteJDBC {
         return bookList;
     }
     /**
-     * 
+     * SelectAll Query
      * @return 
      */
     public ArrayList<Book> selectAllBooks(){
@@ -284,7 +285,7 @@ public class SQLiteJDBC {
             connection.setAutoCommit(false);
             
             statement = connection.createStatement();
-            
+            //build the delete query
             String sql = "DELETE from Books where title='" + title + "' "
                     + "AND author='" + author + "' AND ownership='" + own + "'";
             if(isbn != null) sql+=" AND isbn='" + isbn + "'";
