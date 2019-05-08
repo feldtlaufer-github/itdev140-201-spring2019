@@ -6,13 +6,14 @@ package muhich_indivproject;
  * @author Alex Jerard Muhich
  */
 public class IndivMangaFrame extends javax.swing.JFrame {
-    private Manga manga;
+    private static Manga manga;
+    private final SQLiteJDBC database;
     /**
      * Creates new form IndivMangaFrame
      * @param manga
      */
     public IndivMangaFrame(Manga manga) {
-        this.manga = manga;
+        IndivMangaFrame.manga = manga;
         initComponents();
         //display the manga's information
         etISBN1.setText(manga.getIsbn());
@@ -20,6 +21,8 @@ public class IndivMangaFrame extends javax.swing.JFrame {
         etAuthor1.setText(manga.getAuthor());
         etVolume1.setText(manga.getVolume());
         etOwn1.setText(manga.getOwnership());
+        
+        database = new SQLiteJDBC();
     }
 
     /**
@@ -158,7 +161,6 @@ public class IndivMangaFrame extends javax.swing.JFrame {
      * @param evt 
      */
     private void btnDeleteMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteMangaActionPerformed
-        SQLiteJDBC database = new SQLiteJDBC();
         database.delete(etTitle1.getText(), etAuthor1.getText(), etOwn1.getText(),
                 etISBN1.getText(), etVolume1.getText(), null);
         this.dispose();
@@ -169,7 +171,6 @@ public class IndivMangaFrame extends javax.swing.JFrame {
      */
     private void btnModifyMangaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyMangaActionPerformed
         if(btnModifyManga.getText().equals("Save")){
-            SQLiteJDBC database = new SQLiteJDBC();
             database.updateBook(manga.getIsbn(), manga.getTitle(), manga.getAuthor(), manga.getOwnership(),
                     null, etISBN1.getText(), etTitle1.getText(), etAuthor1.getText(), etVolume1.getText(),
                     etOwn1.getText(), null);
@@ -221,7 +222,7 @@ public class IndivMangaFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new IndivMangaFrame(new Manga(null, null, null, null, null)).setVisible(true);
+            new IndivMangaFrame(manga).setVisible(true);
         });
     }
 

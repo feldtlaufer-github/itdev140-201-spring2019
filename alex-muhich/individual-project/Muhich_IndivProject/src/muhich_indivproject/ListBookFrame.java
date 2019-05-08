@@ -13,12 +13,13 @@ import javax.swing.event.ListSelectionEvent;
  * @author Alex Jerard Muhich
  */
 public class ListBookFrame extends javax.swing.JFrame {
-
+    private static Book[] bookList;
     /**
      * Creates new form ListMangaFrame
      * @param bookList
      */
     public ListBookFrame(Book[] bookList) {
+        ListBookFrame.bookList = bookList;
         initComponents();
         //get the toString list of the books to display in the JList
         String[] stringList = new String[bookList.length];
@@ -132,7 +133,7 @@ public class ListBookFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ListBookFrame(new Book[0]).setVisible(true);
+            new ListBookFrame(bookList).setVisible(true);
         });
     }
 

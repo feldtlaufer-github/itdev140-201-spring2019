@@ -5,18 +5,20 @@ package muhich_indivproject;
  * @author Alex Jerard Muhich
  */
 public class IndivBookFrame extends javax.swing.JFrame {
-    private Book book; //helper variable to remember old info when modifying the entry
+    private static Book book; //helper variable to remember old info when modifying the entry
+    private final SQLiteJDBC database;
     /**
      * Creates new form IndivBookFrame
      * @param book
      */
     public IndivBookFrame(Book book) {
-        this.book = book;
+        IndivBookFrame.book = book;
         initComponents();
         //display the books info on the page
         etTitleBook.setText(book.getTitle());
         etAuthorBook.setText(book.getAuthor());
         etOwnBook.setText(book.getOwnership());
+        database = new SQLiteJDBC();
         
     }
 
@@ -125,7 +127,6 @@ public class IndivBookFrame extends javax.swing.JFrame {
      * @param evt 
      */
     private void btnDeleteBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteBookActionPerformed
-        SQLiteJDBC database = new SQLiteJDBC();
         database.delete(etTitleBook.getText(), etAuthorBook.getText(), etOwnBook.getText(),
                 null, null, null);
         this.dispose();
@@ -137,7 +138,6 @@ public class IndivBookFrame extends javax.swing.JFrame {
      */
     private void btnModifyBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyBookActionPerformed
         if(btnModifyBook.getText().equals("Save")){
-            SQLiteJDBC database = new SQLiteJDBC();
             database.updateBook(null, book.getTitle(), book.getAuthor(), book.getOwnership(),
                     null, null, etTitleBook.getText(), etAuthorBook.getText(), null,
                     etOwnBook.getText(), null);
@@ -173,20 +173,16 @@ public class IndivBookFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IndivBookFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IndivBookFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IndivBookFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(IndivBookFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new IndivBookFrame(new Book(null, null, null)).setVisible(true);
+            new IndivBookFrame(book).setVisible(true);
         });
     }
 

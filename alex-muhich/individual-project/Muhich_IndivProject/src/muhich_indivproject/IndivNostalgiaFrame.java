@@ -6,19 +6,22 @@ package muhich_indivproject;
  * @author Alex Jerard Muhich
  */
 public class IndivNostalgiaFrame extends javax.swing.JFrame {
-    Nostalgia nost;
+    private static Nostalgia nost;
+    private final SQLiteJDBC database;
     /**
      * Creates new form IndivNostalgiaFrame
      * @param nost
      */
     public IndivNostalgiaFrame(Nostalgia nost) {
-        this.nost = nost;
+        IndivNostalgiaFrame.nost = nost;
         initComponents();
         //display the nost's information
         etTitleNost.setText(nost.getTitle());
         etAuthorNost.setText(nost.getAuthor());
         etYearNost.setText(nost.getYear());
         etOwnNost.setText(nost.getOwnership());
+        
+        database = new SQLiteJDBC();
     }
 
     /**
@@ -143,7 +146,6 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
      * @param evt 
      */
     private void btnDeleteNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteNostActionPerformed
-        SQLiteJDBC database = new SQLiteJDBC();
         database.delete(etTitleNost.getText(), etAuthorNost.getText(), etOwnNost.getText(),
                 null, null, etYearNost.getText());
         this.dispose();
@@ -155,7 +157,6 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
      */
     private void btnModifyNostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModifyNostActionPerformed
         if(btnModifyNost.getText().equals("Save")){
-            SQLiteJDBC database = new SQLiteJDBC();
             database.updateBook(null, nost.getTitle(), nost.getAuthor(), nost.getOwnership(),
                     nost.getYear(), null, etTitleNost.getText(), etAuthorNost.getText(), null,
                     etOwnNost.getText(), etYearNost.getText());
@@ -193,20 +194,16 @@ public class IndivNostalgiaFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(IndivNostalgiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(IndivNostalgiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(IndivNostalgiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(IndivNostalgiaFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new IndivNostalgiaFrame(new Nostalgia(null, null, null, null)).setVisible(true);
+            new IndivNostalgiaFrame(nost).setVisible(true);
         });
     }
 
