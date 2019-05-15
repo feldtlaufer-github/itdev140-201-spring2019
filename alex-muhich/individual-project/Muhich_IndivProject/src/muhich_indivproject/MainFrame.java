@@ -288,8 +288,8 @@ public class MainFrame extends javax.swing.JFrame {
                 + "Manga have ISBN, Title, Author, Ownership, and Volume.\n"
                 + "Nostalgia have Title, Author, Ownership, and Year.\n"
                 + "Other Books have Title, Author, and Ownership.\n"
-                + "If you need apostrophes (') please do (\')\n"
-                + "Be wary, sql injection is not prevented in this release");
+                + "Be wary, sql injection is not prevented in this release\n"
+                + "So definitely no apostrophes");
     }//GEN-LAST:event_btnInstructActionPerformed
 
     /**
