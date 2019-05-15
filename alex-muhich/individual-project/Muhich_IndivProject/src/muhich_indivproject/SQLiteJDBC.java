@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -103,6 +104,7 @@ public class SQLiteJDBC {
             
         }catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(SQLiteJDBC.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Sorry about that, please reread instructions for proper data entry");
         }
     }
     
@@ -157,7 +159,7 @@ public class SQLiteJDBC {
             
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+            JOptionPane.showMessageDialog(null, "Sorry about that, please reread instructions for proper data entry");
         }
     }
     /**

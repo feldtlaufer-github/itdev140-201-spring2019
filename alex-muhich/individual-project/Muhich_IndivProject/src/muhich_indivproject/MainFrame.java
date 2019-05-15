@@ -287,7 +287,9 @@ public class MainFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Search on all fields empty is 'Search All'.\n"
                 + "Manga have ISBN, Title, Author, Ownership, and Volume.\n"
                 + "Nostalgia have Title, Author, Ownership, and Year.\n"
-                + "Other Books have Title, Author, and Ownership");
+                + "Other Books have Title, Author, and Ownership.\n"
+                + "If you need apostrophes (') please do (\')\n"
+                + "Be wary, sql injection is not prevented in this release");
     }//GEN-LAST:event_btnInstructActionPerformed
 
     /**
