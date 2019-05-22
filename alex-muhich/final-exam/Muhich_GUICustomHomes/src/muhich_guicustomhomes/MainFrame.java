@@ -1,23 +1,48 @@
 
 package muhich_guicustomhomes;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 
 /**
  *
  * @author Alex Jerard Muhich
  */
+      
 public class MainFrame extends javax.swing.JFrame {
+    
     private final Databaser db;
     private int rowIndex = -1;
+    
+    public void makeSound(){
+        InputStream inputStream;
+        
+        try 
+        {
+            inputStream = getClass().getResourceAsStream("fanfare.wav");
+            AudioStream audioStream = new AudioStream(inputStream);
+            AudioPlayer.player.start(audioStream);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        
+        //try to play audio
+        makeSound();
+        
         ButtonGroup radioBtnGroup = new ButtonGroup();
         radioBtnGroup.add(rbtnDisplay);
         radioBtnGroup.add(rbtnUpdate);
@@ -71,10 +96,13 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableHomeOrders = new javax.swing.JTable();
-        jPanel4 = new javax.swing.JPanel();
+        labelWithImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home Builder Deluxe");
+
+        jPanel1.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setText("First Name:");
 
@@ -181,8 +209,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(new java.awt.Color(51, 153, 0));
+        jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        rbtnDisplay.setBackground(new java.awt.Color(0, 153, 0));
         rbtnDisplay.setText("Display All");
 
+        rbtnUpdate.setBackground(new java.awt.Color(0, 153, 0));
         rbtnUpdate.setText("Update");
         rbtnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -190,8 +223,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        rbtnInsert.setBackground(new java.awt.Color(0, 153, 0));
         rbtnInsert.setText("Insert");
 
+        rbtnDelete.setBackground(new java.awt.Color(0, 153, 0));
         rbtnDelete.setText("Delete");
 
         btnSubmit.setText("Submit");
@@ -217,7 +252,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(rbtnDelete))
                     .addComponent(btnSubmit))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,6 +267,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        tableHomeOrders.setBackground(new java.awt.Color(255, 153, 153));
         tableHomeOrders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -278,16 +316,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+        labelWithImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelWithImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/muhich_guicustomhomes/house.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -302,7 +332,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(labelWithImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -312,7 +342,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelWithImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -344,7 +374,14 @@ public class MainFrame extends javax.swing.JFrame {
                 String state = etState.getText();
                 String zipcode = etZipcode.getText();
                 String typeofhome = etTypeOfHome.getText();
-                Double price = Double.parseDouble(etPrice.getText());
+                Double price = 0.0;
+                try{
+                    price = Double.parseDouble(etPrice.getText());
+                }catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "You tried to insert a price that wasn't a number. So I changed it to 0.0.\n"
+                            + "Please update with an appropriate value at your leisure.");
+                }
+                
                 HomeOrder order = new HomeOrder(firstname, lastname, address, city, state, zipcode, typeofhome, price);
 
                 db.insert(order);
@@ -366,7 +403,13 @@ public class MainFrame extends javax.swing.JFrame {
                 String state = etState.getText();
                 String zipcode = etZipcode.getText();
                 String typeofhome = etTypeOfHome.getText();
-                Double price = Double.parseDouble(etPrice.getText());
+                Double price = 0.0;
+                try{
+                    price = Double.parseDouble(etPrice.getText());
+                }catch(NumberFormatException e){
+                    JOptionPane.showMessageDialog(null, "You tried to update to a price that wasn't a number. So I changed it to 0.0.\n"
+                            + "Please update again with an appropriate value at your leisure.");
+                }
                 HomeOrder newOrder = new HomeOrder(firstname, lastname, address, city, state, zipcode, typeofhome, price);
                 
                 db.update(selectedOrder, newOrder);
@@ -455,8 +498,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelWithImage;
     private javax.swing.JRadioButton rbtnDelete;
     private javax.swing.JRadioButton rbtnDisplay;
     private javax.swing.JRadioButton rbtnInsert;
